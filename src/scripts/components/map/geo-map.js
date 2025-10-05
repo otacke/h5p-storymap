@@ -199,6 +199,10 @@ export default class GeoMap {
 
     this.waypoints.push(waypoint);
 
+    markerDOM.addEventListener('focus', () => {
+      this.centerOnWaypoint(waypoint.getId());
+    });
+
     return waypoint;
   }
 
