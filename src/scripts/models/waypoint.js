@@ -87,7 +87,7 @@ export default class Waypoint {
    * Hide tooltip.
    */
   hideTooltip() {
-    this.tooltip.hide();
+    this.tooltip?.hide();
   }
 
   /**
