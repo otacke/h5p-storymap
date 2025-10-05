@@ -1,0 +1,163 @@
+{
+  "semantics": [
+    {
+      "label": "Editor",
+      "fields": [
+        {
+          "label": "Wegpunkte",
+          "entity": "Wegpunkt",
+          "field": {
+            "label": "Wegpunkt",
+            "fields": [
+              {
+                "label": "Id"
+              },
+              {
+                "label": "Längengrad"
+              },
+              {
+                "label": "Breitengrad"
+              },
+              {
+                "label": "Titel"
+              },
+              {
+                "label": "Inhalte",
+                "entity": "Inhalt",
+                "widgets": [
+                  {
+                    "label": "Formular-Editor"
+                  }
+                ],
+                "field": {
+                  "label": "Inhalt",
+                  "fields": [
+                    {
+                      "label": "Inhaltselement"
+                    },
+                    {
+                      "label": "dummy"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "label": "dummy"
+        }
+      ]
+    },
+    {
+      "label": "Visuelles",
+      "fields": [
+        {
+          "label": "Kartenstil",
+          "options": [
+            {
+              "label": "National Geographic World Map"
+            },
+            {
+              "label": "OpenStreetMap"
+            },
+            {
+              "label": "OpenStreetMap (keine Beschriftung)"
+            },
+            {
+              "label": "OpenTopoMap"
+            },
+            {
+              "label": "Physical Map (keine Beschriftung)"
+            },
+            {
+              "label": "Topographische Karte"
+            }
+          ]
+        },
+        {
+          "label": "Dummy"
+        }
+      ]
+    },
+    {
+      "label": "Verhaltenseinstellungen",
+      "fields": [
+        {
+          "label": "Zeige den Benutzenden die Pfade zwischen Wegpunkten",
+          "description": "Bitte beachten: Die Pfade werden unabhängig von der Einstellung weiterhin im Editor angezeigt."
+        },
+        {
+          "label": "Benutzende können die Mini-Karte verwenden"
+        }
+      ]
+    },
+    {
+      "label": "Texte für Barrierefreiheit",
+      "fields": [
+        {
+          "label": "Werkzeugleiste",
+          "default": "Werkzeugleiste"
+        },
+        {
+          "label": "Gehe zu vorherigem Wegpunkt",
+          "default": "Gehe zu vorherigem Wegpunkt"
+        },
+        {
+          "label": "Gehe zu vorherigem Wegpunkt (deaktiviert)",
+          "default": "Gehe zu vorherigem Wegpunkt (deaktiviert)"
+        },
+        {
+          "label": "Gehe zu nächstem Wegpunkt",
+          "default": "Gehe zu nächstem Wegpunkt"
+        },
+        {
+          "label": "Gehe zu nächstem Wegpunkt (deaktiviert)",
+          "default": "Gehe zu nächstem Wegpunkt (deaktiviert)"
+        },
+        {
+          "label": "Karte zurücksetzen",
+          "default": "Karte zurücksetzen"
+        },
+        {
+          "label": "Blende Mini-Karte aus",
+          "default": "Blende Mini-Karte aus"
+        },
+        {
+          "label": "Blende Mini-Karte ein",
+          "default": "Blende Mini-Karte ein"
+        },
+        {
+          "label": "Vollbildmodus aktivieren",
+          "default": "Gehe in den Vollbildmodus"
+        },
+        {
+          "label": "Vollbildmodus deaktivieren",
+          "default": "Verlasse den Vollbildmodus"
+        },
+        {
+          "label": "Kartenanweisungen",
+          "default": "Karte. Verwende die Pfeiltasten, um die Karte zu navigieren, Plus- und Minus-Tasten, um hinein- und herauszuzoomen. Verwende Tab, um Wegpunkte auszuwählen."
+        },
+        {
+          "label": "Hineinzoomen",
+          "default": "Hineinzoomen"
+        },
+        {
+          "label": "Herauszoomen",
+          "default": "Herauszoomen"
+        },
+        {
+          "label": "Inhalt öffnen",
+          "description": "@title ist ein Platzhalter und wird durch den jeweiligen Wegpunkt-Titel ersetzt.",
+          "default": "Inhalt \"@title\" öffnen"
+        },
+        {
+          "label": "Inhalt geöffnet",
+          "description": "@title ist ein Platzhalter und wird durch den jeweiligen Wegpunkt-Titel ersetzt.",
+          "default": "Der Inhalt \"@title\" wurde geöffnet."
+        }
+      ]
+    }
+  ]
+}

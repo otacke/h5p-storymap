@@ -1,0 +1,163 @@
+{
+  "semantics": [
+    {
+      "label": "Editor",
+      "fields": [
+        {
+          "label": "Waypoints",
+          "entity": "waypoint",
+          "field": {
+            "label": "Waypoint",
+            "fields": [
+              {
+                "label": "Id"
+              },
+              {
+                "label": "Latitude"
+              },
+              {
+                "label": "Longitude"
+              },
+              {
+                "label": "Title"
+              },
+              {
+                "label": "Contents",
+                "entity": "content",
+                "widgets": [
+                  {
+                    "label": "Default"
+                  }
+                ],
+                "field": {
+                  "label": "Content",
+                  "fields": [
+                    {
+                      "label": "Content Item"
+                    },
+                    {
+                      "label": "dummy"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "label": "dummy"
+        }
+      ]
+    },
+    {
+      "label": "Visual settings",
+      "fields": [
+        {
+          "label": "Map style",
+          "options": [
+            {
+              "label": "National Geographic World Map"
+            },
+            {
+              "label": "OpenStreetMap"
+            },
+            {
+              "label": "OpenStreetMap (no labels)"
+            },
+            {
+              "label": "OpenTopoMap"
+            },
+            {
+              "label": "Physical Map (no labels)"
+            },
+            {
+              "label": "Topographic Map"
+            }
+          ]
+        },
+        {
+          "label": "Dummy"
+        }
+      ]
+    },
+    {
+      "label": "Behavioural settings",
+      "fields": [
+        {
+          "label": "Show paths between waypoints to user",
+          "description": "Please note: The paths will still be indicated in the editor regardless of the setting."
+        },
+        {
+          "label": "User can use mini map"
+        }
+      ]
+    },
+    {
+      "label": "Accessibility texts",
+      "fields": [
+        {
+          "label": "Toolbar",
+          "default": "Toolbar."
+        },
+        {
+          "label": "Go to previous waypoint",
+          "default": "Go to previous waypoint"
+        },
+        {
+          "label": "Go to previous waypoint (disabled)",
+          "default": "Go to previous waypoint (disabled)"
+        },
+        {
+          "label": "Go to next waypoint",
+          "default": "Go to next waypoint"
+        },
+        {
+          "label": "Go to next waypoint (disabled)",
+          "default": "Go to next waypoint (disabled)"
+        },
+        {
+          "label": "Reset map",
+          "default": "Reset map"
+        },
+        {
+          "label": "Hide mini map",
+          "default": "Hide mini map"
+        },
+        {
+          "label": "Show mini map",
+          "default": "Show mini map"
+        },
+        {
+          "label": "Enter fullscreen",
+          "default": "Enter fullscreen mode"
+        },
+        {
+          "label": "Exit fullscreen",
+          "default": "Exit fullscreen mode"
+        },
+        {
+          "label": "Map instructions",
+          "default": "Map. Use arrow keys to navigate the map, plus and minus keys to zoom in and out. Use tab to select waypoints."
+        },
+        {
+          "label": "Zoom in",
+          "default": "Zoom in"
+        },
+        {
+          "label": "Zoom out",
+          "default": "Zoom out"
+        },
+        {
+          "label": "Open content",
+          "description": "@title is a placeholder and will be replaced with the respective waypoint title.",
+          "default": "Open content \"@title\""
+        },
+        {
+          "label": "Opened content",
+          "description": "@title is a placeholder and will be replaced with the respective waypoint title.",
+          "default": "The content \"@title\" was opened."
+        }
+      ]
+    }
+  ]
+}

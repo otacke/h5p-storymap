@@ -1,0 +1,278 @@
+[
+  {
+    "name": "editor",
+    "type": "group",
+    "label": "Editor",
+    "expanded": true,
+    "importance": "high",
+    "widget": "storymap",
+    "fields": [
+      {
+        "name": "waypoints",
+        "type": "list",
+        "label": "Waypoints",
+        "importance": "high",
+        "entity": "waypoint",
+        "min": 1,
+        "field": {
+          "name": "waypoint",
+          "type": "group",
+          "label": "Waypoint",
+          "fields": [
+            {
+              "name": "id",
+              "type": "text",
+              "label": "Id",
+              "widget": "none"
+            },
+            {
+              "name": "latitude",
+              "type": "text",
+              "label": "Latitude",
+              "widget": "none"
+            },
+            {
+              "name": "longitude",
+              "type": "text",
+              "label": "Longitude",
+              "widget": "none"
+            },
+            {
+              "name": "title",
+              "type": "text",
+              "label": "Title",
+              "importance": "high"
+            },
+            {
+              "name": "contents",
+              "type": "list",
+              "label": "Contents",
+              "entity": "content",
+              "widgets": [
+                {
+                  "name": "VerticalTabs",
+                  "label": "Default"
+                }
+              ],
+              "min": "1",
+              "field": {
+                "type": "group",
+                "name": "content",
+                "label": "Content",
+                "fields": [
+                  {
+                    "name": "action",
+                    "type": "library",
+                    "label": "Content Item",
+                    "options": [
+                      "H5P.Audio 1.5",
+                      "H5P.Image 1.1",
+                      "H5P.AdvancedText 1.1",
+                      "H5P.Video 1.6"
+                    ]
+                  },
+                  {
+                    "name": "dummy",
+                    "type": "text",
+                    "label": "dummy",
+                    "widget": "none"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "dummy",
+        "type": "text",
+        "label": "dummy",
+        "widget": "none"
+      }
+    ]
+  },
+  {
+    "name": "visual",
+    "type": "group",
+    "label": "Visual settings",
+    "importance": "low",
+    "fields": [
+      {
+        "name": "mapStyle",
+        "type": "select",
+        "label": "Map style",
+        "options": [
+          {
+            "value": "esriNATGeoWorldMap",
+            "label": "National Geographic World Map"
+          },
+          {
+            "value": "openStreetMap",
+            "label": "OpenStreetMap"
+          },
+          {
+            "value": "cartoDB",
+            "label": "OpenStreetMap (no labels)"
+          },
+          {
+            "value": "openTopoMap",
+            "label": "OpenTopoMap"
+          },
+          {
+            "value": "esriWorldPhysicalMap",
+            "label": "Physical Map (no labels)"
+          },
+          {
+            "value": "esriWorldTopoMap",
+            "label": "Topographic Map"
+          }
+        ],
+        "default": "openStreetMap"
+      },
+      {
+        "name": "dummy",
+        "type": "text",
+        "label": "Dummy",
+        "widget": "none"
+      }
+    ]
+  },
+  {
+    "name": "behaviour",
+    "type": "group",
+    "label": "Behavioural settings",
+    "importance": "low",
+    "fields": [
+      {
+        "name": "showPaths",
+        "type": "boolean",
+        "label": "Show paths between waypoints to user",
+        "description": "Please note: The paths will still be indicated in the editor regardless of the setting.",
+        "optional": true,
+        "default": true
+      },
+      {
+        "name": "userCanUseMiniMap",
+        "type": "boolean",
+        "label": "User can use mini map",
+        "optional": true,
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "a11y",
+    "type": "group",
+    "label": "Accessibility texts",
+    "common": true,
+    "fields": [
+      {
+        "name": "navigationBar",
+        "type": "text",
+        "label": "Toolbar",
+        "importance": "low",
+        "default": "Toolbar."
+      },
+      {
+        "name": "buttonPreviousContent",
+        "type": "text",
+        "label": "Go to previous waypoint",
+        "importance": "low",
+        "default": "Go to previous waypoint"
+      },
+      {
+        "name": "buttonPreviousContentDisabled",
+        "type": "text",
+        "label": "Go to previous waypoint (disabled)",
+        "importance": "low",
+        "default": "Go to previous waypoint (disabled)"
+      },
+      {
+        "name": "buttonNextContent",
+        "type": "text",
+        "label": "Go to next waypoint",
+        "importance": "low",
+        "default": "Go to next waypoint"
+      },
+            {
+        "name": "buttonNextContentDisabled",
+        "type": "text",
+        "label": "Go to next waypoint (disabled)",
+        "importance": "low",
+        "default": "Go to next waypoint (disabled)"
+      },
+      {
+        "name": "buttonResetActive",
+        "type": "text",
+        "label": "Reset map",
+        "importance": "low",
+        "default": "Reset map"
+      },
+      {
+        "name": "buttonMiniMapActive",
+        "type": "text",
+        "label": "Hide mini map",
+        "importance": "low",
+        "default": "Hide mini map"
+      },
+      {
+        "name": "buttonMiniMapInactive",
+        "type": "text",
+        "label": "Show mini map",
+        "importance": "low",
+        "default": "Show mini map"
+      },
+      {
+        "name": "enterFullscreen",
+        "type": "text",
+        "label": "Enter fullscreen",
+        "importance": "low",
+        "default": "Enter fullscreen mode"
+      },
+      {
+        "name": "exitFullscreen",
+        "type": "text",
+        "label": "Exit fullscreen",
+        "importance": "low",
+        "default": "Exit fullscreen mode"
+      },
+      {
+        "name": "mapInstructions",
+        "type": "text",
+        "label": "Map instructions",
+        "importance": "low",
+        "default": "Map. Use arrow keys to navigate the map, plus and minus keys to zoom in and out. Use tab to select waypoints."
+      },
+      {
+        "name": "buttonZoomIn",
+        "type": "text",
+        "label": "Zoom in",
+        "importance": "low",
+        "default": "Zoom in"
+      },
+      {
+        "name": "buttonZoomOut",
+        "type": "text",
+        "label": "Zoom out",
+        "importance": "low",
+        "default": "Zoom out"
+      },
+      {
+        "name": "openContent",
+        "type": "text",
+        "label": "Open content",
+        "description": "@title is a placeholder and will be replaced with the respective waypoint title.",
+        "importance": "low",
+        "default": "Open content \"@title\""
+      },
+      {
+        "name": "openedContent",
+        "type": "text",
+        "label": "Opened content",
+        "description": "@title is a placeholder and will be replaced with the respective waypoint title.",
+        "importance": "low",
+        "default": "The content \"@title\" was opened."
+      }
+    ]
+  }
+]

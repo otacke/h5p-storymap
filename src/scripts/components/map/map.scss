@@ -1,0 +1,20 @@
+.h5p-story-map-map {
+  --aspectRatio: 16 / 9;
+
+  height: 100%;
+
+  .h5p-story-map-map-container {
+    aspect-ratio: var(--aspectRatio);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    height: 100%;
+    margin-inline: auto;
+    max-height: var(--max-height, 100%);
+    max-width: var(--max-width, 100%);
+    width: auto;
+    overflow: hidden;
+    padding: 2px; /* Allow outline of leaflet map to be visible when focused */
+    position: relative;
+  }
+}

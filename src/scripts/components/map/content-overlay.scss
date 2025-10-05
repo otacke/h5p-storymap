@@ -1,0 +1,18 @@
+.h5p-story-map-content-overlay {
+  box-shadow: -2px 0 2px -2px hsl(0, 0%, 0%, 0.5);
+  background-color: hsl(0, 0%, 100%, 0.7);
+  grid-area: 1 / 1 / 1 / 1;
+  height: 100%;
+  justify-self: end;
+  max-height: var(--max-height, 100%);
+  max-width: var(--max-width, 100%);
+  overflow-y: auto;
+  position: relative;
+  right: var(--offset-right);
+  width: 50%;
+  z-index: 1001; /* Leaflet assigns ridiculous 1000 to the 4 quadrants, should be on top. */
+
+  &.display-none {
+    display: none;
+  }
+}

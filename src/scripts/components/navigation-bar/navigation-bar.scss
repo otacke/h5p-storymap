@@ -1,0 +1,57 @@
+.h5p-story-map-navigation-bar {
+  --button-size: 3rem;
+  --background-size: 1.15rem;
+  --border-size: 2px;
+
+  align-items: center;
+  box-sizing: border-box;
+  display: grid;
+  gap: 0.5rem;
+  grid-template-columns: auto 1fr auto;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 0.125rem;
+
+  .h5p-story-map-navigation-bar-buttons-container-left {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .h5p-story-map-navigation-bar-buttons-container-right {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+@container h5p-story-map (width <= 440px) {
+  .h5p-story-map-navigation-bar {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+
+    .progress-indicator {
+      grid-area: 2 / 1 / 2 / 3;
+      min-width: none;
+      width: 100%;
+    }
+  }
+}
+
+@container h5p-story-map (width <= 280px) {
+  .h5p-story-map-navigation-bar {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    justify-items: center;
+
+    .h5p-story-map-navigation-bar-buttons-container-left {
+      flex-wrap: wrap;
+    }
+
+    .progress-indicator {
+      grid-area: 3 / 1 / 3 / 1;
+    }
+
+    .h5p-story-map-navigation-bar-buttons-container-right {
+      flex-wrap: wrap;
+    }
+  }
+}

@@ -1,0 +1,110 @@
+.geo-map {
+  --path-color-active: var(--color-primary);
+  --path-color-inactive: hsl(0, 0%, 75%);
+  --path-color: var(--path-color-active);
+  --path-stroke-dash-active: "";
+  --path-stroke-dash-inactive: 0.125rem, 1rem;
+  --path-stroke-dash: var(--path-stroke-dash-active);
+  --pin-color-base: hsl(1, 77%, 55%);
+  --pin-color-open: hsl(246, 77%, 55%);
+
+  aspect-ratio: var(--aspectRatio);
+  grid-area: 1 / 1 / 1 / 1;
+  height: 100%;
+  max-height: var(--max-height, 100%);
+  max-width: var(--max-width, 100%);
+  width: auto;
+  position: relative;
+
+  .leaflet-marker-icon {
+    --pin-color: var(--pin-color-base);
+    --pin-dot-color: hsl(0, 0%, 100%);
+    --pin-shadow-color: hsla(0, 0%, 0%, 0.3);
+    --path-color: var(--color-primary);
+
+    background-color: transparent;
+    border: none;
+
+    &:hover {
+      --pin-color: hsl(from var(--pin-color-base) h s calc(l * 0.8));
+    }
+
+    &:focus {
+      --pin-color: hsl(from var(--pin-color-base) h s calc(l * 0.8));
+    }
+
+    &.open {
+      --pin-color: hsl(from var(--pin-color-base) h s calc(l * 0.6));
+    }
+  }
+
+  .leaflet-control-zoom.leaflet-bar.leaflet-control {
+    background-color: #fff;
+    border-color: var(--color-primary-50);
+
+    .leaflet-control-zoom-in,
+    .leaflet-control-zoom-out {
+      background-color: var(--color-primary-5);
+
+      &:hover {
+        background-color: var(--color-primary-10);
+      }
+
+      &:active {
+        background-color: var(--color-primary-25);
+      }
+
+      &:focus {
+        outline: 2px solid hsl(0, 0%, 0%);
+      }
+    }
+  }
+
+  .leaflet-bottom {
+    z-index: 999; /* Leaflet assigns ridiculous 1000 to the 4 quadrants, should be underneath zoom overlay. */
+  }
+
+  .leaflet-control-minimap {
+    aspect-ratio: var(--aspectRatio);
+    border-color: var(--color-primary-50);
+    border-style: solid;
+    border-width: 2px; /* Same as leaflet uses for zoom controls */
+    cursor: grab;
+    width: calc(var(--waypoint-area-computed-width) * 0.25);
+
+    &.visibility-hidden {
+      visibility: hidden; /* Using display: none causes issues with Leaflet's rendering */
+    }
+  }
+
+  .leaflet-bar a {
+    color: var(--color-primary);
+  }
+
+  .leaflet-overlay-pane {
+    .leaflet-interactive {
+      stroke: var(--path-color);
+      opacity: 0.5;
+      stroke-dasharray: var(--path-stroke-dash);
+    }
+  }
+
+  :not(.leaflet-control-minimap) .leaflet-overlay-pane .leaflet-interactive {
+    stroke-width: 0.5rem;
+  }
+
+  .leaflet-control-minimap .leaflet-overlay-pane .leaflet-interactive {
+    stroke-width: initial;
+  }
+
+  &.add-pin-mode {
+    cursor: crosshair;
+  }
+}
+
+.using-mouse .leaflet-control-zoom.leaflet-bar.leaflet-control {
+  .leaflet-control-zoom-in:focus,
+  .leaflet-control-zoom-out:focus {
+    outline: none;
+  }
+}

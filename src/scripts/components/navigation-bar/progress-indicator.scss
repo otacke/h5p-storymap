@@ -1,0 +1,37 @@
+.progress-indicator {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  min-width: 10ch;
+  font-size: 1.15rem;
+  font-weight: bold;
+  gap: 0.25rem;
+  margin-inline: 0.75rem;
+
+  .progress-now {
+    color: var(--color-primary);
+  }
+
+  .progress-separator {
+    &::before {
+      color: var(--color-text);
+      content: '/';
+    }
+  }
+
+  .progress-max {
+    color: var(--color-primary);
+  }
+
+  .progress-text {
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+  }
+
+  *.display-none {
+    display: none;
+  }
+}

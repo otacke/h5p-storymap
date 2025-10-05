@@ -1,0 +1,107 @@
+.h5p-story-map-button {
+  background-color: var(--color-primary-5);
+  border: var(--border-size) solid var(--color-text-light); /* Same px value as used by Joubel in Interactive Book */
+  border-radius: 3px; /* Same px value as used by Joubel in Interactive Book */
+  color: var(--color-primary);
+  font-size: var(--background-size, 1em);
+  height: var(--button-size);
+  padding: 0;
+  position: relative;
+  width: var(--button-size);
+
+  &::before {
+    color: var(--color-disabled);
+    font-family: "H5PFontAwesome4", sans-serif;
+    font-size: var(--background-size);
+    height: var(--background-size);
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--background-size);
+  }
+
+  &.display-none {
+    display: none;
+  }
+
+  &.h5p-story-map-button-left::before {
+    content: var(--icon-fontawesome-chevron-left);
+  }
+
+  &.h5p-story-map-button-right::before {
+    content: var(--icon-fontawesome-chevron-right);
+  }
+
+  &.h5p-story-map-button-reset::before {
+    content: var(--icon-fontawesome-arrow-rotate-left);
+  }
+
+  &.h5p-story-map-button-mini-map::before {
+    content: var(--icon-fontawesome-compass);
+  }
+
+  &.h5p-story-map-button-fullscreen {
+    &.exit-fullscreen {
+      &.active {
+        background-color: var(--color-primary-5);
+        opacity: 1;
+
+        &:hover {
+          background-color: var(--color-primary-10);
+        }
+
+        &::before {
+          color: var(--color-primary);
+        }
+      }
+
+      &::before {
+        content: var(--icon-fontawesome-compress);
+      }
+    }
+
+    &.enter-fullscreen {
+      &.active {
+        background-color: var(--color-primary-10);
+      }
+
+      &::before {
+        content: var(--icon-fontawesome-expand);
+      }
+    }
+  }
+
+  &:not(.disabled) {
+    &::before {
+      color: var(--color-primary);
+    }
+
+    &:hover {
+      background-color: var(--color-primary-10);
+      cursor: pointer;
+    }
+
+    &:active {
+      background-color: var(--color-primary-15);
+    }
+
+    &.active {
+      background-color: var(--color-primary);
+      opacity: 20;
+
+      &::before {
+        color: var(--color-background);
+      }
+
+      &:hover {
+        background-color: var(--color-primary-90);
+        cursor: pointer;
+      }
+
+      &:active {
+        background-color: var(--color-primary-95);
+      }
+    }
+  }
+}

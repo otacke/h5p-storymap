@@ -1,0 +1,18 @@
+.h5p-story-map-content-bundle {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--h5p-theme-spacing-xs, 0.65rem);
+  opacity: 1;
+  padding: 1rem;
+  transition: opacity 0.25s ease-in-out; // Same time leaflet uses for panning
+
+  .h5p-story-map-content-wrapper {
+    .h5p-audio-inner {
+      background-color: transparent;
+    }
+  }
+
+  &.hidden {
+    opacity: 0;
+  }
+}
