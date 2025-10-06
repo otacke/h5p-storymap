@@ -1,3 +1,4 @@
+import { callOnceVisible } from '@services/util.js';
 import './content-bundle.scss';
 
 export default class ContentBundle {
@@ -51,7 +52,7 @@ export default class ContentBundle {
     const instance = H5P.newRunnable(
       contentParams,
       this.params.globals.get('contentId'),
-      H5P.jQuery(instanceWrapper),
+      undefined,
       true,
     );
 
@@ -60,18 +61,22 @@ export default class ContentBundle {
       return;
     }
 
-    // The usual workaround for HFP-4289 :-( TODO: Can this be removed already?
-    if (instance?.libraryInfo.machineName === 'H5P.Audio') {
-      if (!!window.chrome) {
-        instance.audio.style.height = '54px';
+    callOnceVisible(instanceWrapper, () => {
+      instance.attach(H5P.jQuery(instanceWrapper));
+
+      // The usual workaround for HFP-4289 :-( TODO: Can this be removed already?
+      if (instance?.libraryInfo.machineName === 'H5P.Audio') {
+        if (!!window.chrome) {
+          instance.audio.style.height = '54px';
+        }
       }
-    }
 
-    // Resize parent when children resize
-    this.bubbleUp(instance, 'resize', this.params.globals.get('mainInstance'));
+      // Resize parent when children resize
+      this.bubbleUp(instance, 'resize', this.params.globals.get('mainInstance'));
 
-    // Resize children to fit inside parent
-    this.bubbleDown(this.params.globals.get('mainInstance'), 'resize', [instance]);
+      // Resize children to fit inside parent
+      this.bubbleDown(this.params.globals.get('mainInstance'), 'resize', [instance]);
+    });
 
     this.instances.push(instance);
 
