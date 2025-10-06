@@ -1,8 +1,9 @@
 import Dictionary from '@services/dictionary.js';
 import Globals from '@services/globals.js';
 import { getSemanticsDefaults } from '@services/h5p-util.js';
-import { extend, formatLanguageCode } from '@services/util.js';
+import { addMixins, extend, formatLanguageCode } from '@services/util.js';
 import Main from '@components/main.js';
+import XAPI from '@mixins/xapi.js';
 
 import '@styles/h5p-story-map.scss';
 
@@ -23,6 +24,8 @@ export default class StoryMap extends H5P.EventDispatcher {
    */
   constructor(params, contentId, extras = {}) {
     super();
+
+    addMixins(StoryMap, [XAPI]);
 
     this.params = extend(getSemanticsDefaults(), params);
 
@@ -64,6 +67,12 @@ export default class StoryMap extends H5P.EventDispatcher {
       {
         onRequestFullScreen: () => {
           this.toggleFullScreen();
+        },
+        onCompleted: () => {
+          this.triggerXAPIEvent('completed');
+        },
+        onProgressed: (waypointIndex) => {
+          this.handleUserProgress(waypointIndex);
         },
       },
     );
@@ -133,37 +142,14 @@ export default class StoryMap extends H5P.EventDispatcher {
   }
 
   /**
-   * Get tasks title.
-   * @returns {string} Title.
+   * Handle user progress and trigger xAPI event.
+   * @param {number} waypointIndex Index of waypoint user progressed to.
    */
-  getTitle() {
-    let raw;
-    if (this.extras.metadata) {
-      raw = this.extras.metadata.title;
-    }
-    raw = raw || DEFAULT_DESCRIPTION;
-
-    // H5P Core function: createTitle
-    return H5P.createTitle(raw);
-  }
-
-  /**
-   * Get tasks description.
-   * @returns {string} Description.
-   */
-  getDescription() {
-    return this.params.taskDescription || DEFAULT_DESCRIPTION;
-  }
-
-  /**
-   * Get context data. Contract used for confusion report.
-   * @returns {object} Context data.
-   */
-  getContext() {
-    return {
-      type: 'waypoint',
-      value: this.main.getCurrentOpenWaypointContentIndex(),
-    };
+  handleUserProgress(waypointIndex) {
+    const xAPIEvent = this.createXAPIEvent('progressed');
+    xAPIEvent.data.statement.object.definition
+      .extensions['http://id.tincanapi.com/extension/ending-point'] = waypointIndex + 1;
+    this.trigger(xAPIEvent);
   }
 
   /**
@@ -188,22 +174,6 @@ export default class StoryMap extends H5P.EventDispatcher {
     else {
       H5P.exitFullScreen();
     }
-  }
-
-  /**
-   * Reset task.
-   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-5}
-   */
-  resetTask() {
-    this.main.reset();
-  }
-
-  /**
-   * Return H5P core's call to store current state.
-   * @returns {object} Current state.
-   */
-  getCurrentState() {
-    return this.main.getCurrentState();
   }
 
   /**

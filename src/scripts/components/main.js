@@ -17,10 +17,14 @@ export default class Main {
     this.params = extend({}, params);
     this.callbacks = extend({
       onRequestFullScreen: () => {},
+      onCompleted: () => {},
+      onProgressed: () => {},
     }, callbacks);
 
     this.openWaypointContentIndex = -1;
     this.lastMarkerIndex = this.params.map.waypoints.length - 1;
+    this.wasCompleted = false;
+    this.wasAnswerGiven = false;
 
     this.dom = document.createElement('div');
     this.dom.classList.add('h5p-story-map-main');
@@ -113,13 +117,48 @@ export default class Main {
     this.navigationBar.setFullscreen(shouldBeFullScreen);
   }
 
+  /**
+   * Handle waypoint content opened.
+   * @param {number} index Index of opened waypoint.
+   */
   handleWaypointContentOpened(index) {
+    this.wasAnswerGiven = true;
+
     this.openWaypointContentIndex = index;
     this.updateButtonDisabledStates();
 
     const textToRead = this.params.dictionary.get('a11y.openedContent')
       .replace('@title', this.map.getWaypointByIndex(index)?.getTitle() || '');
     Screenreader.read(textToRead);
+
+    this.callbacks.onProgressed(index);
+
+    this.checkCompleted();
+  }
+
+  /**
+   * Check if the task is completed.
+   */
+  checkCompleted() {
+    if (this.wasCompleted) {
+      return;
+    }
+
+    if (this.openWaypointContentIndex === -1 || this.openWaypointContentIndex !== this.lastMarkerIndex) {
+      return;
+    }
+
+    this.wasCompleted = true;
+
+    this.callbacks.onCompleted();
+  }
+
+  /**
+   * Determine if the user has given an answer = opened any waypoint content.
+   * @returns {boolean} True if the user has given an answer.
+   */
+  getAnswerGiven() {
+    return this.wasAnswerGiven;
   }
 
   /**
@@ -194,6 +233,8 @@ export default class Main {
    */
   reset() {
     this.openWaypointContentIndex = -1;
+    this.wasAnswerGiven = false;
+    this.wasCompleted = false;
     this.updateButtonDisabledStates();
     this.map.reset();
     this.navigationBar.reset();
@@ -225,6 +266,9 @@ export default class Main {
    */
   setCurrentState(state = {}) {
     this.openWaypointContentIndex = state?.openWaypointContentIndex ?? -1;
+    this.wasAnswerGiven = this.openWaypointContentIndex !== -1;
+    this.checkCompleted();
+
     this.updateButtonDisabledStates();
     this.navigationBar.setCurrentState(state?.navigationBar);
 
