@@ -15,12 +15,6 @@ const LATITUDE_MIN = -90;
 /** @constant {number} LATITUDE_MAX Maximum latitude. */
 const LATITUDE_MAX = 90;
 
-/** @constant {number} LONGITUDE_MIN Minimum longitude. */
-const LONGITUDE_MIN = -180;
-
-/** @constant {number} LONGITUDE_MAX Maximum longitude. */
-const LONGITUDE_MAX = 180;
-
 /** @constant {number} DEFAULT_MAP_CENTER_X_PERCENTAGE Default map center X percentage. */
 const DEFAULT_MAP_CENTER_X_PERCENTAGE = 0.5;
 
@@ -110,8 +104,8 @@ export default class GeoMap {
     this.params.zoomLevel = sanitizeNumber(this.params.zoomLevel, DEFAULT_ZOOM_LEVEL);
     this.params.coordinates.latitude =
       sanitizeNumber(this.params.coordinates?.latitude, DEFAULT_COORDINATES[0], LATITUDE_MIN, LATITUDE_MAX);
-    this.params.coordinates.longitude =
-      sanitizeNumber(this.params.coordinates?.longitude, DEFAULT_COORDINATES[1], LONGITUDE_MIN, LONGITUDE_MAX);
+    // No min/max value, as Leaflet supports having multiple maps next to each other
+    this.params.coordinates.longitude = sanitizeNumber(this.params.coordinates?.longitude, DEFAULT_COORDINATES[1]);
 
     this.callbacks = extend({
       onMarkerClick: () => {},
@@ -289,7 +283,9 @@ export default class GeoMap {
    */
   setView(coordinates = {}, zoomLevel) {
     const latitude = sanitizeNumber(coordinates.latitude, DEFAULT_COORDINATES[0], LATITUDE_MIN, LATITUDE_MAX);
-    const longitude = sanitizeNumber(coordinates.longitude, DEFAULT_COORDINATES[1], LONGITUDE_MIN, LONGITUDE_MAX);
+    // No min/max value, as Leaflet supports having multiple maps next to each other
+    const longitude = sanitizeNumber(coordinates.longitude, DEFAULT_COORDINATES[1]);
+
     zoomLevel = sanitizeNumber(zoomLevel, DEFAULT_ZOOM_LEVEL, this.map.getMinZoom(), this.map.getMaxZoom());
 
     this.map.setView([latitude, longitude], zoomLevel, { animate: false });
@@ -348,7 +344,8 @@ export default class GeoMap {
     }
 
     const latitude = sanitizeNumber(coordinates.latitude, DEFAULT_COORDINATES[0], LATITUDE_MIN, LATITUDE_MAX);
-    const longitude = sanitizeNumber(coordinates.longitude, DEFAULT_COORDINATES[1], LONGITUDE_MIN, LONGITUDE_MAX);
+    // No min/max value, as Leaflet supports having multiple maps next to each other
+    const longitude = sanitizeNumber(coordinates.longitude, DEFAULT_COORDINATES[1]);
 
     if (options.zoomLevel) {
       this.map.once('moveend', () => {
