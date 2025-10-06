@@ -81,6 +81,8 @@ export default class ContentBundle {
     this.instances.push(instance);
 
     this.dom.append(instanceWrapper);
+
+    this.params.globals.get('resize')();
   }
 
   /**
