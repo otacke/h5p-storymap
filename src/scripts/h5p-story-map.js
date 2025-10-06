@@ -3,6 +3,7 @@ import Globals from '@services/globals.js';
 import { getSemanticsDefaults } from '@services/h5p-util.js';
 import { addMixins, extend, formatLanguageCode } from '@services/util.js';
 import Main from '@components/main.js';
+import QuestionTypeContract from '@mixins/question-type-contract.js';
 import XAPI from '@mixins/xapi.js';
 
 import '@styles/h5p-story-map.scss';
@@ -25,7 +26,7 @@ export default class StoryMap extends H5P.EventDispatcher {
   constructor(params, contentId, extras = {}) {
     super();
 
-    addMixins(StoryMap, [XAPI]);
+    addMixins(StoryMap, [QuestionTypeContract, XAPI]);
 
     this.params = extend(getSemanticsDefaults(), params);
 
