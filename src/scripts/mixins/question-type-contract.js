@@ -16,8 +16,6 @@ export default class QuestionTypeContract {
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-5}
    */
   resetTask() {
-    console.log('1');
-
     this.main.reset();
   }
 
