@@ -106,6 +106,7 @@ export default class GeoMap {
       coordinates: {},
     }, params);
 
+
     this.params.zoomLevel = sanitizeNumber(this.params.zoomLevel, DEFAULT_ZOOM_LEVEL);
     this.params.coordinates.latitude =
       sanitizeNumber(this.params.coordinates?.latitude, DEFAULT_COORDINATES[0], LATITUDE_MIN, LATITUDE_MAX);
@@ -333,10 +334,10 @@ export default class GeoMap {
 
     const newCenterLatLng = this.map.containerPointToLatLng(newCenterPoint);
 
-    this.panTo({ latitude: newCenterLatLng.lat, longitude: newCenterLatLng.lng });
+    this.panTo({ latitude: newCenterLatLng.lat, longitude: newCenterLatLng.lng }, options);
   }
 
-  panTo(coordinates = {}) {
+  panTo(coordinates = {}, options = {}) {
     if (typeof coordinates.latitude !== 'number' || typeof coordinates.longitude !== 'number') {
       return;
     }
@@ -344,23 +345,37 @@ export default class GeoMap {
     const latitude = sanitizeNumber(coordinates.latitude, DEFAULT_COORDINATES[0], LATITUDE_MIN, LATITUDE_MAX);
     const longitude = sanitizeNumber(coordinates.longitude, DEFAULT_COORDINATES[1], LONGITUDE_MIN, LONGITUDE_MAX);
 
+    if (options.zoomLevel) {
+      this.map.once('moveend', () => {
+        this.map.setZoom(options.zoomLevel, { animate: true });
+      });
+    }
+
     this.map.panTo([latitude, longitude]);
+  }
+
+  /**
+   * Get current zoom level.
+   * @returns {number} Current zoom level.
+   */
+  getZoomLevel() {
+    return this.map.getZoom();
   }
 
   /**
    * Reset map.
    */
   reset() {
-    this.map.setZoom(this.params.zoomLevel);
-
     if (!this.waypoints) {
+      this.map.setZoom(this.params.zoomLevel);
       return;
     }
 
-    this.centerOnWaypoint(this.waypoints[0].getId());
     this.waypoints.forEach((waypoint) => {
       waypoint.setOpen(false);
     });
+
+    this.centerOnWaypoint(this.waypoints[0].getId(), { zoomLevel: this.params.zoomLevel });
   }
 
   /**

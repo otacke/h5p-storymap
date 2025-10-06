@@ -81,7 +81,7 @@ export const callOnceVisible = async (dom, callback, options = {}) => {
 };
 
 /**
- * Sanitize number.
+ * Sanitize number. Will try to interpret strings as numbers.
  * @param {number} value Value to sanitize.
  * @param {number} defaultValue Default value if value is not a number.
  * @param {number} [min] Minimum value.
@@ -89,22 +89,31 @@ export const callOnceVisible = async (dom, callback, options = {}) => {
  * @returns {number} Sanitized number.
  */
 export const sanitizeNumber = (value, defaultValue, min, max) => {
-  if (typeof value !== 'number' || Number.isNaN(value)) {
+  let result = value;
+
+  if (typeof value === 'string') {
+    result = parseFloat(value);
+    if (result.toString() !== value.trim()) {
+      result = NaN;
+    }
+  }
+
+  if (typeof result !== 'number' || Number.isNaN(result)) {
     if (typeof defaultValue !== 'number') {
       throw new Error('Invalid default value');
     }
     return defaultValue;
   }
 
-  if (typeof min === 'number' && value < min) {
+  if (typeof min === 'number' && result < min) {
     return min;
   }
 
-  if (typeof max === 'number' && value > max) {
+  if (typeof max === 'number' && result > max) {
     return max;
   }
 
-  return value;
+  return result;
 };
 
 /**

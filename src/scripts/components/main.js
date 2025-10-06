@@ -211,8 +211,6 @@ export default class Main {
    * @returns {object} Current state.
    */
   getCurrentState() {
-    console.log('getCurrentState', this.getCurrentOpenWaypointContentIndex());
-
     return {
       openWaypointContentIndex: this.getCurrentOpenWaypointContentIndex(),
       navigationBar: this.navigationBar.getCurrentState(),

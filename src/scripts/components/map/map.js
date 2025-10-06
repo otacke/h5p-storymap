@@ -199,9 +199,13 @@ export default class Map {
    * @returns {object} Current state.
    */
   getCurrentState() {
+    const coordinates = this.geoMap.getCoordinates();
+    coordinates.latitude = coordinates.latitude?.toString();
+    coordinates.longitude = coordinates.longitude?.toString();
+
     return {
       zoomLevel: this.geoMap.getZoomLevel(),
-      coordinates: this.geoMap.getCoordinates(),
+      coordinates: coordinates,
     };
   }
 
@@ -210,6 +214,10 @@ export default class Map {
    * @param {object} state State.
    */
   setCurrentState(state = {}) {
+    if (state.coordinates?.latitude === undefined || state.coordinates?.longitude === undefined) {
+      return;
+    }
+
     this.geoMap.setView(state?.coordinates, state?.zoomLevel);
   }
 }
