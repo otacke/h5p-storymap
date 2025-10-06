@@ -69,7 +69,7 @@ export default class StoryMap extends H5P.EventDispatcher {
           this.toggleFullScreen();
         },
         onCompleted: () => {
-          this.triggerXAPIEvent('completed');
+          this.handleUserCompleted();
         },
         onProgressed: (waypointIndex) => {
           this.handleUserProgress(waypointIndex);
@@ -142,10 +142,25 @@ export default class StoryMap extends H5P.EventDispatcher {
   }
 
   /**
+   * Handle user completed.
+   */
+  handleUserCompleted() {
+    if (window.H5PEditor) {
+      return; // Don't send xAPI events when in editor.
+    }
+
+    this.triggerXAPIEvent('completed');
+  }
+
+  /**
    * Handle user progress and trigger xAPI event.
    * @param {number} waypointIndex Index of waypoint user progressed to.
    */
   handleUserProgress(waypointIndex) {
+    if (window.H5PEditor) {
+      return; // Don't send xAPI events when in editor.
+    }
+
     const xAPIEvent = this.createXAPIEvent('progressed');
     xAPIEvent.data.statement.object.definition
       .extensions['http://id.tincanapi.com/extension/ending-point'] = waypointIndex + 1;
