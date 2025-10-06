@@ -59,10 +59,14 @@ export default class Main {
         mapStyle: this.params.visual.mapStyle,
         userCanUseMiniMap: this.params.behaviour.userCanUseMiniMap,
         showPaths: this.params.behaviour.showPaths,
+        previousState: this.params.previousState?.map || {},
       },
       {
         onWaypointContentOpened: (index) => {
           this.handleWaypointContentOpened(index);
+        },
+        onMarkerFocus: (waypoint) => {
+          this.map.centerOnWaypoint(waypoint, this.getCurrentOpenWaypointContentIndex !== -1);
         },
       },
     );
@@ -207,6 +211,8 @@ export default class Main {
    * @returns {object} Current state.
    */
   getCurrentState() {
+    console.log('getCurrentState', this.getCurrentOpenWaypointContentIndex());
+
     return {
       openWaypointContentIndex: this.getCurrentOpenWaypointContentIndex(),
       navigationBar: this.navigationBar.getCurrentState(),
@@ -219,8 +225,14 @@ export default class Main {
    * @param {object} state State to set, must match return value from getCurrentState.
    */
   setCurrentState(state = {}) {
+    this.openWaypointContentIndex = state?.openWaypointContentIndex ?? -1;
+    this.updateButtonDisabledStates();
     this.navigationBar.setCurrentState(state?.navigationBar);
+
     this.map.setCurrentState(state?.map);
-    this.map.openWaypointContentByIndex(state?.openWaypointContentIndex, { panTo: false });
+    this.map.openWaypointContentByIndex(state?.openWaypointContentIndex, {
+      panTo: false, // Avoid panning away from previously set coordinates
+      contentOpen: this.openWaypointContentIndex !== -1,
+    });
   }
 }

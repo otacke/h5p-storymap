@@ -1,6 +1,6 @@
 import Dictionary from '@services/dictionary.js';
 import Globals from '@services/globals.js';
-import H5PUtil from '@services/h5p-util.js';
+import { getSemanticsDefaults } from '@services/h5p-util.js';
 import { extend, formatLanguageCode } from '@services/util.js';
 import Main from '@components/main.js';
 
@@ -24,7 +24,7 @@ export default class StoryMap extends H5P.EventDispatcher {
   constructor(params, contentId, extras = {}) {
     super();
 
-    this.params = extend(H5PUtil.getSemanticsDefaults(), params);
+    this.params = extend(getSemanticsDefaults(), params);
 
     this.contentId = contentId;
     this.extras = extend({
@@ -59,6 +59,7 @@ export default class StoryMap extends H5P.EventDispatcher {
         globals: this.globals,
         map: this.params.editor,
         visual: this.params.visual,
+        previousState: this.extras.previousState ?? {},
       },
       {
         onRequestFullScreen: () => {

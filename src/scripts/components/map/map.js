@@ -6,6 +6,12 @@ import './map.scss';
 /** @constant {string} ASPECT_RATIO_DEFAULT Default aspect ratio if not set in CSS */
 const ASPECT_RATIO_DEFAULT = '16 / 9';
 
+/** @constant {number} MAP_CENTER_X_PERCENTAGE Map center X percentage. */
+const MAP_CENTER_X_PERCENTAGE = 0.5;
+
+/** @constant {number} MAP_CENTER_X_PERCENTAGE_CONTENT_OPEN Map center X percentage when content is open. */
+const MAP_CENTER_X_PERCENTAGE_CONTENT_OPEN = 0.25;
+
 export default class Map {
   constructor(params = {}, callbacks = {}) {
     this.params = extend({
@@ -17,6 +23,7 @@ export default class Map {
 
     this.callbacks = extend({
       onWaypointContentOpened: () => {},
+      onMarkerFocus: () => {},
     }, callbacks);
 
     this.dom = document.createElement('div');
@@ -26,14 +33,20 @@ export default class Map {
     this.mapContainer.classList.add('h5p-story-map-map-container');
     this.dom.append(this.mapContainer);
 
-    // Geo map
+    const coordinatesFirstWaypoint = {
+      latitude: this.params.waypoints[0]?.latitude ?? null,
+      longitude: this.params.waypoints[0]?.longitude ?? null,
+    };
 
+    // Geo map
     this.geoMap = new GeoMap(
       {
         globals: this.params.globals,
         dictionary: this.params.dictionary,
         waypoints: this.params.waypoints,
         showPaths: this.params.showPaths,
+        zoomLevel: this.params.previousState?.zoomLevel,
+        coordinates: this.params.previousState?.coordinates ?? coordinatesFirstWaypoint,
       },
       {
         onMarkerClick: (waypoint) => {
@@ -41,6 +54,9 @@ export default class Map {
         },
         onWaypointContentOpened: (index) => {
           this.callbacks.onWaypointContentOpened(index);
+        },
+        onMarkerFocus: (waypoint) => {
+          this.callbacks.onMarkerFocus(waypoint);
         },
       },
     );
@@ -119,10 +135,6 @@ export default class Map {
 
     this.geoMap.setOpenWaypoint(waypoint);
 
-    if (options.panTo !== false) {
-      this.geoMap.centerOnWaypoint(waypoint.getId(), { positionXPercentage: 0.25 });
-    }
-
     waypoint.hideContentDOM();
     this.contentOverlay.setContent(waypoint.getContentDOM());
     this.contentOverlay.show();
@@ -131,6 +143,26 @@ export default class Map {
     });
 
     this.callbacks.onWaypointContentOpened(waypoint.getIndex());
+
+    if (options.panTo === false) {
+      return;
+    }
+
+    this.callbacks.onMarkerFocus(waypoint);
+  }
+
+  /**
+   * Center map on waypoint.
+   * @param {object} waypoint Waypoint.
+   * @param {boolean} contentOpen Whether content is open.
+   */
+  centerOnWaypoint(waypoint, contentOpen = false) {
+    if (!waypoint) {
+      return;
+    }
+
+    const positionXPercentage = contentOpen ? MAP_CENTER_X_PERCENTAGE_CONTENT_OPEN : MAP_CENTER_X_PERCENTAGE;
+    this.geoMap.centerOnWaypoint(waypoint.getId(), { positionXPercentage });
   }
 
   /**

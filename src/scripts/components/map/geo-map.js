@@ -4,6 +4,7 @@ import MARKER_SVG from '@assets/marker.svg?inline';
 import { extend } from '@services/util.js';
 import Waypoint from '@models/waypoint.js';
 import { sanitizeNumber } from '@services/util.js';
+import { isUsingMouse } from '@services/h5p-util.js';
 
 import 'leaflet/dist/leaflet.css';
 import './geo-map.scss';
@@ -25,6 +26,13 @@ const DEFAULT_MAP_CENTER_X_PERCENTAGE = 0.5;
 
 /** @constant {number} DEFAULT_MAP_CENTER_Y_PERCENTAGE Default map center Y percentage. */
 const DEFAULT_MAP_CENTER_Y_PERCENTAGE = 0.5;
+
+/** @constant {number} DEFAULT_ZOOM_LEVEL Default zoom level. */
+const DEFAULT_ZOOM_LEVEL = 13;
+
+/** @constant {number[]} DEFAULT_COORDINATES Default coordinates (H5P Group in Tromsø). */
+// eslint-disable-next-line
+const DEFAULT_COORDINATES = [69.6456737, 18.9501558];
 
 /** @constant {object} MARKER_ICON Marker icon.*/
 const MARKER_ICON = L.divIcon({
@@ -86,13 +94,6 @@ const MAP_SERVICES = {
   },
 };
 
-/** @constant {number} DEFAULT_ZOOM_LEVEL Default zoom level. */
-const DEFAULT_ZOOM_LEVEL = 13;
-
-/** @constant {number[]} DEFAULT_COORDINATES Default coordinates (H5P Group in Tromsø). */
-// eslint-disable-next-line
-const DEFAULT_COORDINATES = [69.6456737, 18.9501558];
-
 export default class GeoMap {
   /**
    * @class
@@ -102,11 +103,19 @@ export default class GeoMap {
   constructor(params = {}, callbacks = {}) {
     this.params = extend({
       waypoints: [],
+      coordinates: {},
     }, params);
+
+    this.params.zoomLevel = sanitizeNumber(this.params.zoomLevel, DEFAULT_ZOOM_LEVEL);
+    this.params.coordinates.latitude =
+      sanitizeNumber(this.params.coordinates?.latitude, DEFAULT_COORDINATES[0], LATITUDE_MIN, LATITUDE_MAX);
+    this.params.coordinates.longitude =
+      sanitizeNumber(this.params.coordinates?.longitude, DEFAULT_COORDINATES[1], LONGITUDE_MIN, LONGITUDE_MAX);
 
     this.callbacks = extend({
       onMarkerClick: () => {},
       onWaypointContentOpened: () => {},
+      onMarkerFocus: () => {},
     }, callbacks);
 
     this.waypoints = [];
@@ -114,8 +123,6 @@ export default class GeoMap {
 
     this.buildDOM();
     this.buildMap();
-
-    this.reset();
   }
 
   /**
@@ -132,7 +139,8 @@ export default class GeoMap {
    * Build the map.
    */
   buildMap() {
-    this.map = L.map(this.dom).setView(DEFAULT_COORDINATES, DEFAULT_ZOOM_LEVEL);
+    this.map = L.map(this.dom);
+    this.setView(this.params.coordinates, this.params.zoomLevel);
 
     this.map.on('movestart', () => {
       this.waypoints.forEach((waypoint) => {
@@ -185,6 +193,7 @@ export default class GeoMap {
         tooltip: tooltip,
       },
     );
+    this.waypoints.push(waypoint);
 
     marker.on('keydown', (event) => {
       if (event.originalEvent.key === 'Enter' || event.originalEvent.key === ' ') {
@@ -197,10 +206,14 @@ export default class GeoMap {
       this.callbacks.onMarkerClick(waypoint);
     });
 
-    this.waypoints.push(waypoint);
-
-    markerDOM.addEventListener('focus', () => {
-      this.centerOnWaypoint(waypoint.getId());
+    markerDOM.addEventListener('focus', (event) => {
+      // Cathing focus inhibits click event with leaflet
+      if (isUsingMouse()) {
+        this.callbacks.onMarkerClick(waypoint);
+      }
+      else {
+        this.callbacks.onMarkerFocus(waypoint);
+      }
     });
 
     return waypoint;
@@ -263,10 +276,11 @@ export default class GeoMap {
     H5P.Tooltip?.(zoomOutButton, { position: 'right' });
   }
 
-  getZoomLevel() {
-    return this.map.getZoom();
-  }
-
+  /**
+   * Set view of the map.
+   * @param {object} coordinates Coordinates to center on ({ latitude: number, longitude: number }).
+   * @param {number} zoomLevel Zoom level.
+   */
   setView(coordinates = {}, zoomLevel) {
     const latitude = sanitizeNumber(coordinates.latitude, DEFAULT_COORDINATES[0], LATITUDE_MIN, LATITUDE_MAX);
     const longitude = sanitizeNumber(coordinates.longitude, DEFAULT_COORDINATES[1], LONGITUDE_MIN, LONGITUDE_MAX);
@@ -289,6 +303,11 @@ export default class GeoMap {
    * @param {object} options Options for centering.
    */
   centerOnWaypoint(id, options = {}) {
+    const mapSize = this.getSize();
+    if (mapSize.width === 0 || mapSize.height === 0) {
+      return; // Map is not visible, do nothing.
+    }
+
     options.positionXPercentage = sanitizeNumber(options.positionXPercentage, DEFAULT_MAP_CENTER_X_PERCENTAGE, 0, 1);
     options.positionYPercentage = sanitizeNumber(options.positionYPercentage, DEFAULT_MAP_CENTER_Y_PERCENTAGE, 0, 1);
 
@@ -299,7 +318,6 @@ export default class GeoMap {
 
     const markerLatLng = waypoint.getMarker().getLatLng();
 
-    const mapSize = this.getSize();
     const targetPoint = L.point(
       mapSize.width * options.positionXPercentage,
       mapSize.height * options.positionYPercentage,
@@ -315,14 +333,25 @@ export default class GeoMap {
 
     const newCenterLatLng = this.map.containerPointToLatLng(newCenterPoint);
 
-    this.map.panTo(newCenterLatLng);
+    this.panTo({ latitude: newCenterLatLng.lat, longitude: newCenterLatLng.lng });
+  }
+
+  panTo(coordinates = {}) {
+    if (typeof coordinates.latitude !== 'number' || typeof coordinates.longitude !== 'number') {
+      return;
+    }
+
+    const latitude = sanitizeNumber(coordinates.latitude, DEFAULT_COORDINATES[0], LATITUDE_MIN, LATITUDE_MAX);
+    const longitude = sanitizeNumber(coordinates.longitude, DEFAULT_COORDINATES[1], LONGITUDE_MIN, LONGITUDE_MAX);
+
+    this.map.panTo([latitude, longitude]);
   }
 
   /**
    * Reset map.
    */
   reset() {
-    this.map.setZoom(DEFAULT_ZOOM_LEVEL);
+    this.map.setZoom(this.params.zoomLevel);
 
     if (!this.waypoints) {
       return;
