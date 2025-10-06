@@ -84,10 +84,13 @@
         }
       },
       {
-        "name": "dummy",
-        "type": "text",
-        "label": "dummy",
-        "widget": "none"
+        "name": "zoomLevelDefault",
+        "type": "number",
+        "label": "Default zoom level",
+        "optional": true,
+        "default": 12,
+        "min": 0,
+        "max": 28
       }
     ]
   },

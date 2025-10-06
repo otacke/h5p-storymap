@@ -3,7 +3,7 @@ import MiniMap from 'leaflet-minimap';
 import MARKER_SVG from '@assets/marker.svg?inline';
 import { extend } from '@services/util.js';
 import Waypoint from '@models/waypoint.js';
-import { sanitizeNumber } from '@services/util.js';
+import { callOnceVisible, sanitizeNumber } from '@services/util.js';
 import { isUsingMouse } from '@services/h5p-util.js';
 
 import 'leaflet/dist/leaflet.css';
@@ -124,6 +124,11 @@ export default class GeoMap {
 
     this.buildDOM();
     this.buildMap();
+
+    // Ensure map is properly rendered if used in different contexts, e.g. in editor widget for preview
+    callOnceVisible(this.dom, () => {
+      this.map.invalidateSize();
+    });
   }
 
   /**
@@ -207,9 +212,9 @@ export default class GeoMap {
       this.callbacks.onMarkerClick(waypoint);
     });
 
-    markerDOM.addEventListener('focus', (event) => {
+    markerDOM.addEventListener('focus', () => {
       // Cathing focus inhibits click event with leaflet
-      if (isUsingMouse()) {
+      if (isUsingMouse() || isUsingMouse('.h5peditor-storymap')) {
         this.callbacks.onMarkerClick(waypoint);
       }
       else {
@@ -374,6 +379,10 @@ export default class GeoMap {
     this.waypoints.forEach((waypoint) => {
       waypoint.setOpen(false);
     });
+
+    if (!this.waypoints.length) {
+      return;
+    }
 
     this.centerOnWaypoint(this.waypoints[0].getId(), { zoomLevel: this.params.zoomLevel });
   }

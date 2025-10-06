@@ -36,17 +36,10 @@ export const getSemanticsDefaults = (start = semantics) => {
 
 /**
  * Check if the user is using a mouse.
+ * @param {string} [selector] The selector to check for the using-mouse class.
  * @param {Document} [baseDocument] The document to check.
  * @returns {boolean|undefined} Undefined if cannot be determined, True if the user is using a mouse, false otherwise.
  */
-export const isUsingMouse = (baseDocument) => {
-  baseDocument = baseDocument || document;
-
-  const h5pContent = baseDocument.querySelector('.h5p-content');
-
-  if (!h5pContent) {
-    return;
-  }
-
-  return h5pContent.classList.contains('using-mouse');
+export const isUsingMouse = (selector = '.h5p-content', baseDocument) => {
+  return (baseDocument ?? document).querySelector(selector)?.classList.contains('using-mouse');
 };

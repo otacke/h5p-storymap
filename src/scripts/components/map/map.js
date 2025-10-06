@@ -45,7 +45,7 @@ export default class Map {
         dictionary: this.params.dictionary,
         waypoints: this.params.waypoints,
         showPaths: this.params.showPaths,
-        zoomLevel: this.params.previousState?.zoomLevel,
+        zoomLevel: this.params.previousState?.zoomLevel ?? this.params.zoomLevelDefault,
         coordinates: this.params.previousState?.coordinates ?? coordinatesFirstWaypoint,
       },
       {

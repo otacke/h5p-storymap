@@ -56,6 +56,7 @@ export default class Main {
         globals: this.params.globals,
         dictionary: this.params.dictionary,
         waypoints: this.params.map.waypoints,
+        zoomLevelDefault: this.params.map.zoomLevelDefault,
         mapStyle: this.params.visual.mapStyle,
         userCanUseMiniMap: this.params.behaviour.userCanUseMiniMap,
         showPaths: this.params.behaviour.showPaths,

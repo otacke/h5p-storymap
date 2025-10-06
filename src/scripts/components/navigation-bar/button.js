@@ -76,7 +76,7 @@ export default class Button {
       this.callbacks.onClick(event);
     });
 
-    H5P.Tooltip?.(this.dom, { position: 'top' });
+    H5P.Tooltip?.(this.dom, { position: 'bottom' });
   }
 
   /**
