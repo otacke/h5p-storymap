@@ -121,8 +121,15 @@ export default class GeoMap {
 
     // Ensure map is properly rendered if used in different contexts, e.g. in editor widget for preview
     callOnceVisible(this.dom, () => {
-      this.map.invalidateSize();
+      this.invalidateSize();
     });
+  }
+
+  /**
+   * Invalidate map size.
+   */
+  invalidateSize() {
+    this.map.invalidateSize();
   }
 
   /**
@@ -291,6 +298,10 @@ export default class GeoMap {
     this.map.setView([latitude, longitude], zoomLevel, { animate: false });
   }
 
+  /**
+   * Get coordinates of the map center.
+   * @returns {object} Coordinates of the map center ({ latitude: number, longitude: number }).
+   */
   getCoordinates() {
     const center = this.map.getCenter();
     return {
@@ -338,6 +349,11 @@ export default class GeoMap {
     this.panTo({ latitude: newCenterLatLng.lat, longitude: newCenterLatLng.lng }, options);
   }
 
+  /**
+   * Pan to certain coordinates.
+   * @param {object} coordinates Coordinates to pan to ({ latitude: number, longitude: number }).
+   * @param {object} options Options for panning.
+   */
   panTo(coordinates = {}, options = {}) {
     if (typeof coordinates.latitude !== 'number' || typeof coordinates.longitude !== 'number') {
       return;

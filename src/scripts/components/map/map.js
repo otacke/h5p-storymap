@@ -192,6 +192,8 @@ export default class Map {
     else {
       this.mapContainer.style.setProperty('--max-width', `${availableSpace.width}px`);
     }
+
+    this.geoMap.invalidateSize();
   }
 
   /**
