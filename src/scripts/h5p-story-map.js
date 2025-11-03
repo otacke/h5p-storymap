@@ -8,9 +8,6 @@ import XAPI from '@mixins/xapi.js';
 
 import '@styles/h5p-story-map.scss';
 
-/** @constant {string} DEFAULT_DESCRIPTION Default description*/
-const DEFAULT_DESCRIPTION = 'Story Map';
-
 /** @constant {number} FULL_SCREEN_DELAY Time some browsers need to go to full screen. */
 const FULL_SCREEN_DELAY = 300;
 
