@@ -1,6 +1,6 @@
 import Dictionary from '@services/dictionary.js';
 import Globals from '@services/globals.js';
-import { getSemanticsDefaults } from '@services/h5p-util.js';
+import { isEditor, getSemanticsDefaults } from '@services/h5p-util.js';
 import { addMixins, extend, formatLanguageCode } from '@services/util.js';
 import Main from '@components/main.js';
 import QuestionTypeContract from '@mixins/question-type-contract.js';
@@ -146,7 +146,7 @@ export default class StoryMap extends H5P.EventDispatcher {
    * Handle user completed.
    */
   handleUserCompleted() {
-    if (window.H5PEditor) {
+    if (isEditor()) {
       return; // Don't send xAPI events when in editor.
     }
 

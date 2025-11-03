@@ -58,6 +58,9 @@ export default class Map {
         onMarkerFocus: (waypoint) => {
           this.callbacks.onMarkerFocus(waypoint);
         },
+        onTaskCompleted: () => {
+          this.callbacks.onTaskCompleted();
+        },
       },
     );
     this.mapContainer.append(this.geoMap.getDOM());
@@ -194,6 +197,14 @@ export default class Map {
     }
 
     this.geoMap.invalidateSize();
+  }
+
+  /**
+   * Get all content bundles.
+   * @returns {object[]} ContentBundles.
+   */
+  getContentBundles() {
+    return this.geoMap.getContentBundles();
   }
 
   /**

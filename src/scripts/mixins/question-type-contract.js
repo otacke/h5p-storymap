@@ -12,6 +12,34 @@ export default class QuestionTypeContract {
   }
 
   /**
+   * Get current score.
+   * @returns {number} Current score.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-2}
+   */
+  getScore() {
+    return this.main.getScore();
+  }
+
+  /**
+   * Get maximum possible score.
+   * @returns {number} Maximum possible score.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-3}
+   */
+  getMaxScore() {
+    this.maxScore = this.maxScore ?? this.main.getMaxScore();
+
+    return this.maxScore;
+  }
+
+  /**
+   * Show solutions.
+   * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-4}
+   */
+  showSolutions() {
+    this.main.showSolutions();
+  }
+
+  /**
    * Reset task.
    * @see contract at {@link https://h5p.org/documentation/developers/contracts#guides-header-5}
    */

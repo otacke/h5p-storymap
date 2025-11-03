@@ -199,6 +199,11 @@ export default class GeoMap {
         },
         tooltip: tooltip,
       },
+      {
+        onTaskCompleted: () => {
+          this.callbacks.onTaskCompleted();
+        },
+      },
     );
     this.waypoints.push(waypoint);
 
@@ -390,7 +395,7 @@ export default class GeoMap {
     }
 
     this.waypoints.forEach((waypoint) => {
-      waypoint.setOpen(false);
+      waypoint.reset();
     });
 
     if (!this.waypoints.length) {
@@ -529,5 +534,13 @@ export default class GeoMap {
     this.waypoints.forEach((waypointToOpen) => {
       waypointToOpen.setOpen(waypointToOpen === waypoint);
     });
+  }
+
+  /**
+   * Get all content bundles.
+   * @returns {object[]} Content bundles.
+   */
+  getContentBundles() {
+    return this.waypoints.map((waypoint) => waypoint.getContentBundle());
   }
 }

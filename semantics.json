@@ -66,7 +66,12 @@
                     "label": "Content Item",
                     "options": [
                       "H5P.Audio 1.5",
+                      "H5P.CoursePresentation 1.26",
+                      "H5P.Dialogcards 1.9",
                       "H5P.Image 1.1",
+                      "H5P.ImageHotspots 1.10",
+                      "H5P.ImageJuxtaposition 1.5",
+                      "H5P.InteractiveVideo 1.27",
                       "H5P.AdvancedText 1.1",
                       "H5P.Video 1.6"
                     ]

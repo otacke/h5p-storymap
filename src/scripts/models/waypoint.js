@@ -18,6 +18,7 @@ export default class Waypoint {
 
     this.callbacks = extend({
       onFocusBlur: () => {},
+      onTaskCompleted: () => {},
     }, callbacks);
 
     this.params = extend({}, params);
@@ -25,10 +26,17 @@ export default class Waypoint {
     this.params.waypointParams.title =
       this.params.waypointParams.title || this.params.dictionary.get('l10n.unnamedWaypoint');
 
-    this.contentBundle = new ContentBundle({
-      globals: this.params.globals,
-      contents: this.params.waypointParams.contents || [],
-    });
+    this.contentBundle = new ContentBundle(
+      {
+        globals: this.params.globals,
+        contents: this.params.waypointParams.contents || [],
+      },
+      {
+        onTaskCompleted: () => {
+          this.callbacks.onTaskCompleted();
+        },
+      },
+    );
 
     this.tooltip = params.tooltip;
   }
@@ -110,5 +118,18 @@ export default class Waypoint {
    */
   getContentDOM() {
     return this.contentBundle.getDOM();
+  }
+
+  /**
+   * Get content bundle.
+   * @returns {ContentBundle} Content bundle.
+   */
+  getContentBundle() {
+    return this.contentBundle;
+  }
+
+  reset() {
+    this.setOpen(false);
+    this.contentBundle.reset();
   }
 }

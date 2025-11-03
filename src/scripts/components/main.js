@@ -73,6 +73,9 @@ export default class Main {
         onMarkerFocus: (waypoint) => {
           this.map.centerOnWaypoint(waypoint, this.getCurrentOpenWaypointContentIndex !== -1);
         },
+        onTaskCompleted: () => {
+          this.checkCompleted();
+        },
       },
     );
     this.dom.append(this.map.getDOM());
@@ -82,6 +85,10 @@ export default class Main {
 
     this.addKeyboardShortcuts();
     this.updateButtonDisabledStates();
+
+    this.containsAnyTask = this.map.getContentBundles().some((contentBundle) => {
+      return contentBundle.containsAnyTask();
+    });
   }
 
   /**
@@ -144,7 +151,8 @@ export default class Main {
       return;
     }
 
-    if (this.openWaypointContentIndex === -1 || this.openWaypointContentIndex !== this.lastMarkerIndex) {
+    const wasCompleted = this.containsAnyTask ? this.haveAllTasksBeenCompleted() : this.isLastWaypointOpened();
+    if (!wasCompleted) {
       return;
     }
 
@@ -154,11 +162,58 @@ export default class Main {
   }
 
   /**
+   * Determine if all tasks have been completed.
+   * @returns {boolean} True if all tasks have been completed.
+   */
+  haveAllTasksBeenCompleted() {
+    return this.map.getContentBundles().every((contentBundle) => {
+      return contentBundle.isCompleted();
+    });
+  }
+
+  /**
+   * Determine if the last waypoint content is opened.
+   * @returns {boolean} True if the last waypoint content is opened.
+   */
+  isLastWaypointOpened() {
+    return this.openWaypointContentIndex !== -1 && this.openWaypointContentIndex === this.lastMarkerIndex;
+  }
+
+  /**
    * Determine if the user has given an answer = opened any waypoint content.
    * @returns {boolean} True if the user has given an answer.
    */
   getAnswerGiven() {
     return this.wasAnswerGiven;
+  }
+
+  /**
+   * Get current score.
+   * @returns {number} Current score.
+   */
+  getScore() {
+    return this.map.getContentBundles().reduce((score, contentBundle) => {
+      return score + contentBundle.getScore();
+    }, 0);
+  }
+
+  /**
+   * Get maximum possible score.
+   * @returns {number} Maximum possible score.
+   */
+  getMaxScore() {
+    return this.map.getContentBundles().reduce((maxScore, contentBundle) => {
+      return maxScore + contentBundle.getMaxScore();
+    }, 0);
+  }
+
+  /**
+   * Show solutions for all child question types.
+   */
+  showSolutions() {
+    this.map.getContentBundles().forEach((contentBundle) => {
+      contentBundle.showSolutions();
+    });
   }
 
   /**

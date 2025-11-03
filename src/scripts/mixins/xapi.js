@@ -28,14 +28,16 @@ export default class XAPI {
       xAPIEvent.getVerifiedStatementValue(['object', 'definition']),
       this.getXAPIDefinition());
 
+    let score = this.getScore();
+    let maxScore = this.getMaxScore();
+
+    if (maxScore === 0) {
+      score = 1; // Score of 1 is stupid, but workaround for task completion in moodle
+      maxScore = 1;
+    }
+
     if (verb === 'completed' || verb === 'answered') {
-      xAPIEvent.setScoredResult(
-        1, // Score of 1 is stupid, but workaround for task completion in moodle
-        1,
-        this,
-        true,
-        true,
-      );
+      xAPIEvent.setScoredResult(score, maxScore, this, true, score >= maxScore);
     }
 
     return xAPIEvent;

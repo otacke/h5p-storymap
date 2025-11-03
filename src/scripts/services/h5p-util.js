@@ -35,6 +35,37 @@ export const getSemanticsDefaults = (start = semantics) => {
 };
 
 /**
+ * Determine whether the H5P editor is being used.
+ * @returns {boolean} True if the H5P editor is being used, false otherwise.
+ */
+export const isEditor = () => {
+  return window.H5PEditor !== undefined;
+};
+
+/**
+ * Determine whether an H5P instance is a task.
+ * @param {H5P.ContentType} instance Instance.
+ * @returns {boolean} True, if instance is a task.
+ */
+export const isInstanceTask = (instance = {}) => {
+  if (!instance) {
+    return false;
+  }
+
+  if (typeof instance.isTask === 'boolean') {
+    return instance.isTask; // Content will determine if it's task on its own
+  }
+
+  // Check for maxScore > 0 as indicator for being a task
+  const hasGetMaxScore = (typeof instance.getMaxScore === 'function');
+  if (hasGetMaxScore && instance.getMaxScore() > 0) {
+    return true;
+  }
+
+  return false;
+};
+
+/**
  * Check if the user is using a mouse.
  * @param {string} [selector] The selector to check for the using-mouse class.
  * @param {Document} [baseDocument] The document to check.

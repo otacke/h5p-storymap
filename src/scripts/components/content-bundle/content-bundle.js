@@ -1,4 +1,5 @@
-import { callOnceVisible } from '@services/util.js';
+import { isInstanceTask } from '@services/h5p-util.js';
+import { callOnceVisible, extend } from '@services/util.js';
 import './content-bundle.scss';
 
 export default class ContentBundle {
@@ -6,16 +7,20 @@ export default class ContentBundle {
    * @class
    * @param {object} params Parameters.
    */
-  constructor(params = {}) {
-    this.params = params;
+  constructor(params = {}, callbacks = {}) {
+    this.params = extend({}, params);
+    this.callbacks = extend({
+      onTaskCompleted: () => {},
+    }, callbacks);
 
     this.instances = [];
+    this.trackingMap = {};
 
     this.dom = document.createElement('div');
     this.dom.classList.add('h5p-story-map-content-bundle');
 
-    this.params.contents.forEach((contentParams) => {
-      this.addContent(contentParams.action);
+    this.params.contents.forEach((contentParams, index) => {
+      this.addContent(contentParams.action, index);
     });
   }
 
@@ -44,8 +49,9 @@ export default class ContentBundle {
   /**
    * Add content.
    * @param {object} contentParams Content parameters.
+   * @param {number} index Index.
    */
-  addContent(contentParams) {
+  addContent(contentParams, index) {
     const instanceWrapper = document.createElement('div');
     instanceWrapper.classList.add('h5p-story-map-content-wrapper');
 
@@ -59,6 +65,31 @@ export default class ContentBundle {
     if (!instance) {
       console.warn('Failed to create content instance', contentParams);
       return;
+    }
+
+    if (isInstanceTask(instance)) {
+      instance.on('xAPI', (event) => {
+        if (typeof event.getMaxScore() !== 'number') {
+          return;
+        }
+
+        const xAPIVerb = event.getVerb();
+        if (xAPIVerb !== 'completed' && xAPIVerb !== 'answered') {
+          return;
+        }
+
+        const result = event.getVerifiedStatementValue(['result']) ?? {};
+
+        this.trackingMap[index] = {
+          completed: result.completion ?? true,
+          success: result.success ?? (result.maxScore) ? ((result.score ?? 0) >= result.maxScore) : false,
+        };
+
+        this.callbacks.onTaskCompleted();
+      });
+    }
+    else {
+      this.trackingMap[index] = { isTask: false, completed: true, success: true };
     }
 
     callOnceVisible(instanceWrapper, () => {
@@ -76,6 +107,8 @@ export default class ContentBundle {
 
       // Resize children to fit inside parent
       this.bubbleDown(this.params.globals.get('mainInstance'), 'resize', [instance]);
+
+      instance.trigger('resize');
     });
 
     this.instances.push(instance);
@@ -83,6 +116,23 @@ export default class ContentBundle {
     this.dom.append(instanceWrapper);
 
     this.params.globals.get('resize')();
+  }
+
+  /**
+   * Determine whether the content bundle contains any tasks.
+   * @returns {boolean} True if the content bundle contains any tasks.
+   */
+  containsAnyTask() {
+    return this.instances.some((instance) => isInstanceTask(instance));
+  }
+
+  /**
+   * Determine whether all tasks are completed.
+   * @returns {boolean} True if all tasks are completed.
+   */
+  isCompleted() {
+    return this.instances.length === Object.keys(this.trackingMap).length &&
+      Object.values(this.trackingMap).every((entry) => entry.completed);
   }
 
   /**
@@ -128,5 +178,49 @@ export default class ContentBundle {
         target.trigger(eventName, event);
       });
     });
+  }
+
+  /**
+   * Get score.
+   * @returns {number} Score.
+   */
+  getScore() {
+    return this.instances.reduce((total, instance) => {
+      return total + (instance?.getScore?.() || 0);
+    }, 0);
+  }
+
+  /**
+   * Get maximum score.
+   * @returns {number} Maximum score.
+   */
+  getMaxScore() {
+    return this.instances.reduce((total, instance) => {
+      return total + (instance?.getMaxScore?.() || 0);
+    }, 0);
+  }
+
+  /**
+   * Show solutions for all child question types.
+   */
+  showSolutions() {
+    this.instances.forEach((instance) => {
+      instance?.showSolutions?.();
+    });
+  }
+
+  /**
+   * Reset all child question types.
+   */
+  reset() {
+    this.instances.forEach((instance) => {
+      instance?.resetTask?.();
+    });
+
+    for (const index in this.trackingMap) {
+      if (this.trackingMap[index].isTask !== false) {
+        delete this.trackingMap[index];
+      }
+    }
   }
 }
