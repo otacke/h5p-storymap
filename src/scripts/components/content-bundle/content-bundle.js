@@ -6,6 +6,7 @@ export default class ContentBundle {
   /**
    * @class
    * @param {object} params Parameters.
+   * @param {object} callbacks Callbacks.
    */
   constructor(params = {}, callbacks = {}) {
     this.params = extend({}, params);
