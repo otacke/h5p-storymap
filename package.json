@@ -1,6 +1,6 @@
 {
 "name": "h5p-storymap",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create interactive story maps with H5P",
   "private": true,
   "scripts": {
