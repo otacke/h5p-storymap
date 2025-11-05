@@ -38,6 +38,10 @@ export default class ContentBundle {
    */
   show() {
     this.dom.classList.remove('hidden');
+
+    window.requestAnimationFrame(() => {
+      this.params.globals.get('resize')();
+    });
   }
 
   /**
