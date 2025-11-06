@@ -155,7 +155,7 @@
         "name": "showPaths",
         "type": "boolean",
         "label": "Show paths between waypoints to user",
-        "description": "Please note: The paths will still be indicated in the editor regardless of the setting.",
+        "description": "Please note: The paths will still be implied in the editor regardless of the setting.",
         "optional": true,
         "default": true
       },
