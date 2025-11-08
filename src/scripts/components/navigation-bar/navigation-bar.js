@@ -209,6 +209,7 @@ export default class NavigationBar {
 
     this.buttons.fullscreen.toggleClass('enter-fullscreen', state !== true);
     this.buttons.fullscreen.toggleClass('exit-fullscreen', state === true);
+    this.buttons.fullscreen.toggleClass('active', state === true);
   }
 
   /**
