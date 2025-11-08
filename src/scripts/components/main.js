@@ -122,6 +122,10 @@ export default class Main {
     });
 
     this.navigationBar.setFullscreen(shouldBeFullScreen);
+
+    window.requestAnimationFrame(() => {
+      this.params.globals.get('resize')();
+    });
   }
 
   /**
