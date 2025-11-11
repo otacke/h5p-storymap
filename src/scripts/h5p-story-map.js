@@ -1,5 +1,4 @@
 import Dictionary from '@services/dictionary.js';
-import Globals from '@services/globals.js';
 import { isEditor, getSemanticsDefaults } from '@services/h5p-util.js';
 import { addMixins, extend, formatLanguageCode } from '@services/util.js';
 import Main from '@components/main.js';
@@ -39,7 +38,7 @@ export default class StoryMap extends H5P.EventDispatcher {
     const isFullscreenSupported = this.isRoot() && H5P.fullscreenSupported;
 
     // Set globals
-    this.globals = new Globals();
+    this.globals = new Map();
     this.globals.set('contentId', this.contentId);
     this.globals.set('mainInstance', this);
     this.globals.set('isFullscreenSupported', isFullscreenSupported);
