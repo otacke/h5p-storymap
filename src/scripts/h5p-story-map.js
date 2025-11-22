@@ -10,8 +10,6 @@ import '@styles/h5p-story-map.scss';
 /** @constant {number} FULL_SCREEN_DELAY Time some browsers need to go to full screen. */
 const FULL_SCREEN_DELAY = 300;
 
-// TODO: Clean up code
-
 export default class StoryMap extends H5P.EventDispatcher {
   /**
    * @class

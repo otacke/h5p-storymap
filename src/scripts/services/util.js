@@ -79,6 +79,15 @@ export const formatLanguageCode = (languageCode) => {
   return languageCode;
 };
 
+/**
+ * Call a callback once the given DOM element is visible in the viewport.
+ * @param {object} dom DOM element to observe.
+ * @param {function} callback Callback to call once visible.
+ * @param {object} [options] Options.
+ * @param {object} [options.root] Root element for intersection observer.
+ * @param {number} [options.threshold] Threshold for intersection observer.
+ * @returns {Promise<object>} Promise resolving with the created IntersectionObserver.
+ */
 export const callOnceVisible = async (dom, callback, options = {}) => {
   if (typeof dom !== 'object' || typeof callback !== 'function') {
     return; // Invalid arguments

@@ -58,8 +58,30 @@ export default class NavigationBar {
    * @returns {object} Object containing the DOM and buttons.
    */
   buildDOM() {
-    const buttons = {};
+    const dom = this.buildMainContainer();
 
+    const { container: buttonsContainerNavigation, buttons: navigationButtons } = this.buildNavigationButtons();
+    dom.append(buttonsContainerNavigation);
+
+    const progressIndicator = this.buildProgressIndicator();
+    dom.append(progressIndicator);
+
+    const { container: buttonsContainerActions, buttons: actionButtons } = this.buildActionButtons();
+    dom.append(buttonsContainerActions);
+
+    const buttons = {
+      ...navigationButtons,
+      ...actionButtons,
+    };
+
+    return { dom, buttons };
+  }
+
+  /**
+   * Build main container.
+   * @returns {HTMLElement} Main navigation bar container.
+   */
+  buildMainContainer() {
     const dom = document.createElement('nav');
     dom.classList.add('h5p-story-map-navigation-bar');
     dom.setAttribute('role', 'toolbar');
@@ -69,20 +91,17 @@ export default class NavigationBar {
       this.handleKeydown(event);
     });
 
-    const buttonsContainerLeft = document.createElement('div');
-    buttonsContainerLeft.classList.add('h5p-story-map-navigation-bar-buttons-container-left');
-    dom.append(buttonsContainerLeft);
+    return dom;
+  }
 
-
-    this.progressIndicator = new ProgressIndicator({
-      dictionary: this.params.dictionary,
-    });
-    this.progressIndicator.toggleTextMode(true);
-    dom.append(this.progressIndicator.getDOM());
-
-    const buttonsContainerRight = document.createElement('div');
-    buttonsContainerRight.classList.add('h5p-story-map-navigation-bar-buttons-container-right');
-    dom.append(buttonsContainerRight);
+  /**
+   * Build navigation buttons container.
+   * @returns {object} Object containing the container and buttons.
+   */
+  buildNavigationButtons() {
+    const buttons = {};
+    const buttonsContainerNavigation = document.createElement('div');
+    buttonsContainerNavigation.classList.add('h5p-story-map-navigation-bar-buttons-container-navigation');
 
     buttons.left = new Button(
       {
@@ -103,7 +122,7 @@ export default class NavigationBar {
         },
       },
     );
-    buttonsContainerLeft.append(buttons.left.getDOM());
+    buttonsContainerNavigation.append(buttons.left.getDOM());
 
     buttons.right = new Button(
       {
@@ -124,7 +143,32 @@ export default class NavigationBar {
         },
       },
     );
-    buttonsContainerLeft.append(buttons.right.getDOM());
+    buttonsContainerNavigation.append(buttons.right.getDOM());
+
+    return { container: buttonsContainerNavigation, buttons };
+  }
+
+  /**
+   * Build progress indicator.
+   * @returns {HTMLElement} Progress indicator DOM.
+   */
+  buildProgressIndicator() {
+    this.progressIndicator = new ProgressIndicator({
+      dictionary: this.params.dictionary,
+    });
+    this.progressIndicator.toggleTextMode(true);
+
+    return this.progressIndicator.getDOM();
+  }
+
+  /**
+   * Build action buttons container.
+   * @returns {object} Object containing the container and buttons.
+   */
+  buildActionButtons() {
+    const buttons = {};
+    const buttonsContainerActions = document.createElement('div');
+    buttonsContainerActions.classList.add('h5p-story-map-navigation-bar-buttons-container-actions');
 
     buttons.reset = new Button(
       {
@@ -144,7 +188,7 @@ export default class NavigationBar {
         },
       },
     );
-    buttonsContainerRight.append(buttons.reset.getDOM());
+    buttonsContainerActions.append(buttons.reset.getDOM());
 
     if (this.params.userCanUseMiniMap) {
       buttons.minimap = new Button(
@@ -167,7 +211,7 @@ export default class NavigationBar {
         },
       );
 
-      buttonsContainerRight.append(buttons.minimap.getDOM());
+      buttonsContainerActions.append(buttons.minimap.getDOM());
     }
 
     if (this.params.globals.get('isFullscreenSupported')) {
@@ -192,10 +236,10 @@ export default class NavigationBar {
         },
       );
 
-      buttonsContainerRight.append(buttons.fullscreen.getDOM());
+      buttonsContainerActions.append(buttons.fullscreen.getDOM());
     }
 
-    return { dom, buttons };
+    return { container: buttonsContainerActions, buttons };
   }
 
   /**
@@ -269,6 +313,7 @@ export default class NavigationBar {
     else {
       return;
     }
+
     event.preventDefault();
   }
 
