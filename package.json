@@ -21,7 +21,7 @@
   "devDependencies": {
     "@babel/core": "^7.29.0",
     "@babel/preset-env": "^7.29.0",
-    "babel-loader": "^10.0.0",
+    "babel-loader": "^10.1.0",
     "css-loader": "^7.1.4",
     "eslint-config-snordian-h5p": "github:otacke/eslint-config-snordian-h5p",
     "mini-css-extract-plugin": "^2.10.0",
@@ -36,7 +36,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "dompurify": "^3.3.1",
+    "dompurify": "^3.3.2",
     "he": "^1.2.0",
     "leaflet": "^1.9.4",
     "leaflet-minimap": "^3.6.1"
