@@ -29,14 +29,14 @@
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.99.0",
     "sass-loader": "^16.0.7",
-    "stylelint": "^17.6.0",
+    "stylelint": "^17.8.0",
     "stylelint-config-recommended": "^18.0.0",
-    "stylelint-config-recommended-scss": "^17.0.0",
-    "webpack": "^5.105.4",
+    "stylelint-config-recommended-scss": "^17.0.1",
+    "webpack": "^5.106.2",
     "webpack-cli": "^7.0.2"
   },
   "dependencies": {
-    "dompurify": "^3.3.3",
+    "dompurify": "^3.4.0",
     "he": "^1.2.0",
     "leaflet": "^1.9.4",
     "leaflet-minimap": "^3.6.1"
