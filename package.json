@@ -36,7 +36,7 @@
     "webpack-cli": "^7.0.2"
   },
   "dependencies": {
-    "dompurify": "^3.4.2",
+    "dompurify": "^3.4.3",
     "he": "^1.2.0",
     "leaflet": "^1.9.4",
     "leaflet-minimap": "^3.6.1"
