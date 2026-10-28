@@ -18,8 +18,8 @@
   "author": "Oliver Tacke",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^8.0.6",
-    "@babel/preset-env": "^8.0.6",
+    "@babel/core": "^8.0.7",
+    "@babel/preset-env": "^8.0.7",
     "babel-loader": "^10.1.1",
     "css-loader": "^7.1.5",
     "eslint-config-snordian-h5p": "github:otacke/eslint-config-snordian-h5p",
@@ -36,7 +36,7 @@
     "webpack-cli": "^7.2.3"
   },
   "dependencies": {
-    "dompurify": "^3.4.16",
+    "dompurify": "^3.4.17",
     "he": "^1.2.0",
     "leaflet": "^1.9.4",
     "leaflet-minimap": "^3.6.1"
