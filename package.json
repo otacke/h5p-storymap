@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "dompurify": "^3.4.17",
-    "he": "^1.2.0",
+    "he": "^2.0.0",
     "leaflet": "^1.9.4",
     "leaflet-minimap": "^3.6.1"
   },
