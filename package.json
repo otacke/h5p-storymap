@@ -18,7 +18,7 @@
   "author": "Oliver Tacke",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^8.0.10",
+    "@babel/core": "^8.1.2",
     "@babel/preset-env": "^8.0.7",
     "babel-loader": "^10.1.1",
     "css-loader": "^7.1.5",
@@ -26,21 +26,24 @@
     "mini-css-extract-plugin": "^2.10.2",
     "regenerator-runtime": "^0.14.1",
     "resolve-url-loader": "^5.0.0",
-    "sass": "^1.107.1",
+    "sass": "^1.108.2",
     "sass-loader": "^17.1.0",
-    "stylelint": "^17.16.0",
-    "stylelint-config-recommended": "^18.0.0",
-    "stylelint-config-recommended-scss": "^17.0.1",
+    "stylelint": "^18.0.0",
+    "stylelint-config-recommended": "^19.0.0",
+    "stylelint-config-recommended-scss": "^18.0.0",
     "terser-webpack-plugin": "^5.6.1",
     "webpack": "^5.112.2",
     "webpack-cli": "^7.3.1"
   },
   "dependencies": {
-    "dompurify": "^3.4.17",
+    "dompurify": "^3.4.18",
     "he": "^2.0.0",
     "leaflet": "^1.9.4",
     "leaflet-minimap": "^3.6.1"
   },
   "browserslist": "> 0.5%, last 3 versions, Firefox ESR, not dead",
-  "type": "module"
+  "type": "module",
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true
+  }
 }
