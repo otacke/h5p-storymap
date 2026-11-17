@@ -1,6 +1,6 @@
 .h5p-story-map-main {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin: 1rem;
+  gap: var(--h5p-theme-spacing-xxs);
+  margin: var(--h5p-theme-spacing-s);
 }

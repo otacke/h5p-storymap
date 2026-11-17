@@ -3,24 +3,24 @@
   display: flex;
   flex-direction: row;
   min-width: 10ch;
-  font-size: 1.15rem;
+  font-size: var(--h5p-theme-font-size-l);
   font-weight: bold;
-  gap: 0.25rem;
-  margin-inline: 0.75rem;
+  gap: calc(0.5 * var(--h5p-theme-spacing-xxs));
+  margin-inline: var(--h5p-theme-spacing-xs);
 
   .progress-now {
-    color: var(--color-primary);
+    color: var(--h5p-theme-main-cta-base);
   }
 
   .progress-separator {
     &::before {
-      color: var(--color-text);
+      color: var(--h5p-theme-text-primary);
       content: '/';
     }
   }
 
   .progress-max {
-    color: var(--color-primary);
+    color: var(--h5p-theme-main-cta-base);
   }
 
   .progress-text {

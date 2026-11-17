@@ -1,12 +1,11 @@
 .geo-map {
-  --path-color-active: var(--color-primary);
+  --path-color-active: var(--h5p-theme-main-cta-base);
   --path-color-inactive: hsl(0, 0%, 75%);
   --path-color: var(--path-color-active);
   --path-stroke-dash-active: "";
   --path-stroke-dash-inactive: 0.125rem, 1rem;
   --path-stroke-dash: var(--path-stroke-dash-active);
   --pin-color-base: hsl(1, 77%, 55%);
-  --pin-color-open: hsl(246, 77%, 55%);
 
   aspect-ratio: var(--aspectRatio);
   grid-area: 1 / 1 / 1 / 1;
@@ -20,7 +19,7 @@
     --pin-color: var(--pin-color-base);
     --pin-dot-color: hsl(0, 0%, 100%);
     --pin-shadow-color: hsla(0, 0%, 0%, 0.3);
-    --path-color: var(--color-primary);
+    --path-color: var(--h5p-theme-main-cta-base);
 
     background-color: transparent;
     border: none;
@@ -39,23 +38,23 @@
   }
 
   .leaflet-control-zoom.leaflet-bar.leaflet-control {
-    background-color: #fff;
-    border-color: var(--color-primary-50);
+    background-color: var(--h5p-theme-ui-base);
+    border-color: color-mix(in srgb, var(--h5p-theme-main-cta-base), transparent 50%);
 
     .leaflet-control-zoom-in,
     .leaflet-control-zoom-out {
-      background-color: var(--color-primary-5);
+      background-color: color-mix(in srgb, var(--h5p-theme-main-cta-base), transparent 95%);
 
       &:hover {
-        background-color: var(--color-primary-10);
+        background-color: color-mix(in srgb, var(--h5p-theme-main-cta-base), transparent 90%);
       }
 
       &:active {
-        background-color: var(--color-primary-25);
+        background-color: color-mix(in srgb, var(--h5p-theme-main-cta-base), transparent 75%);
       }
 
       &:focus {
-        outline: 2px solid hsl(0, 0%, 0%);
+        outline: 2px solid var(--h5p-theme-focus);
       }
     }
   }
@@ -66,7 +65,7 @@
 
   .leaflet-control-minimap {
     aspect-ratio: var(--aspectRatio);
-    border-color: var(--color-primary-50);
+    border-color: color-mix(in srgb, var(--h5p-theme-main-cta-base), transparent 50%);
     border-style: solid;
     border-width: 2px; /* Same as leaflet uses for zoom controls */
     cursor: grab;
@@ -78,7 +77,7 @@
   }
 
   .leaflet-bar a {
-    color: var(--color-primary);
+    color: var(--h5p-theme-main-cta-base);
   }
 
   .leaflet-overlay-pane {

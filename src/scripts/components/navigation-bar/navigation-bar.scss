@@ -1,25 +1,26 @@
 .h5p-story-map-navigation-bar {
-  --button-size: 3rem;
-  --background-size: 1.15rem;
-  --border-size: 2px;
+  --button-size: var(--h5p-theme-spacing-xl);
+  --icon-size: var(--h5p-theme-font-size-xl);
 
   align-items: center;
   box-sizing: border-box;
   display: grid;
-  gap: 0.5rem;
+  gap: var(--h5p-theme-spacing-xxs);
   grid-template-columns: auto 1fr auto;
   justify-content: space-between;
   overflow: hidden;
-  padding: 0.125rem;
+  padding: var(--h5p-theme-spacing-xxs); /* Leave room for focus outline of buttons */
 
   .h5p-story-map-navigation-bar-buttons-container-navigation {
     display: flex;
     flex-direction: row;
+    gap: var(--h5p-theme-spacing-xxs);
   }
 
   .h5p-story-map-navigation-bar-buttons-container-actions {
     display: flex;
     flex-direction: row;
+    gap: var(--h5p-theme-spacing-xxs);
   }
 }
 

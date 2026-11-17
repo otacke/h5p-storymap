@@ -1,9 +1,9 @@
 .h5p-story-map-content-bundle {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--h5p-theme-spacing-xs, 0.65rem);
+  gap: var(--h5p-theme-spacing-xs);
   opacity: 1;
-  padding: 1rem;
+  padding: var(--h5p-theme-spacing-s);
   transition: opacity 0.25s ease-in-out; // Same time leaflet uses for panning
 
   .h5p-story-map-content-wrapper {
