@@ -7,9 +7,6 @@ import XAPI from '@mixins/xapi.js';
 
 import '@styles/h5p-story-map.scss';
 
-/** @constant {number} FULL_SCREEN_DELAY Time some browsers need to go to full screen. */
-const FULL_SCREEN_DELAY = 300;
-
 export default class StoryMap extends H5P.EventDispatcher {
   /**
    * @class
@@ -92,44 +89,26 @@ export default class StoryMap extends H5P.EventDispatcher {
    * Set up handlers for fullscreen changes.
    */
   setupFullscreenHandlers() {
+    /*
+     * Layout is handled by CSS. Device rotation and other viewport changes
+     * trigger H5P's resize event, which keeps the map in sync.
+     */
     this.on('enterFullScreen', () => {
-      window.setTimeout(() => {
-        this.main.setFullscreen(true);
-      }, FULL_SCREEN_DELAY);
+      this.setFullscreen(true);
     });
 
     this.on('exitFullScreen', () => {
-      this.main.setFullscreen(false);
+      this.setFullscreen(false);
     });
+  }
 
-    const recomputeDimensions = () => {
-      if (H5P.isFullscreen) {
-        window.clearTimeout(this.recomputeDimensionsTimeout);
-        this.recomputeDimensionsTimeout = window.setTimeout(() => { // Needs time to rotate for window.innerHeight
-          this.main.setFullscreen(H5P.isFullscreen);
-        }, FULL_SCREEN_DELAY);
-      }
-    };
-
-    this.on('resize', () => {
-      recomputeDimensions();
-    });
-
-    // Resize fullscreen dimensions when rotating screen
-    if (screen?.orientation?.addEventListener) {
-      screen?.orientation?.addEventListener('change', () => {
-        recomputeDimensions();
-      });
-    }
-    else {
-      /*
-      * `orientationchange` is deprecated, but guess what browser doesn't
-      * support the Screen Orientation API ... From something with fruit.
-      */
-      window.addEventListener('orientationchange', () => {
-        recomputeDimensions();
-      }, false);
-    }
+  /**
+   * Set fullscreen state.
+   * @param {boolean} shouldBeFullScreen True for fullscreen, false otherwise.
+   */
+  setFullscreen(shouldBeFullScreen) {
+    this.dom.classList.toggle('h5p-story-map-fullscreen', shouldBeFullScreen);
+    this.main.setFullscreen(shouldBeFullScreen);
   }
 
   /**

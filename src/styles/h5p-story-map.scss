@@ -4,6 +4,7 @@
   --icon-fontawesome-chevron-left: "\f053";
   --icon-fontawesome-chevron-right: "\f054";
   --icon-fontawesome-compass: "\f14e";
+  --icon-h5ptheme-close: "\e910";
   --icon-h5ptheme-compress: "\e914";
   --icon-h5ptheme-expand: "\e915";
 
@@ -11,4 +12,15 @@
   color: var(--h5p-theme-text-primary);
   container-name: h5p-story-map;
   container-type: inline-size;
+
+  /* Fill the whole screen, map takes the space that the toolbar leaves */
+  &.h5p-story-map-fullscreen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+    @supports (height: 100dvh) {
+      height: 100dvh; /* Accounts for mobile browser UI showing/hiding */
+    }
+  }
 }

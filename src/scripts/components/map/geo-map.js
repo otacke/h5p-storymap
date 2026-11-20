@@ -439,8 +439,9 @@ export default class GeoMap {
    * Resize map.
    */
   resize() {
-    window.clearTimeout(this.pinWrapperTimeout);
-    this.pinWrapperTimeout = window.requestAnimationFrame(() => {
+    window.cancelAnimationFrame(this.resizeAnimationFrame);
+    this.resizeAnimationFrame = window.requestAnimationFrame(() => {
+      this.invalidateSize();
       this.updateSizeProperties();
     });
   }
@@ -534,6 +535,14 @@ export default class GeoMap {
     this.waypoints.forEach((waypointToOpen) => {
       waypointToOpen.setOpen(waypointToOpen === waypoint);
     });
+  }
+
+  /**
+   * Get open waypoint.
+   * @returns {Waypoint|undefined} Open waypoint or undefined if none is open.
+   */
+  getOpenWaypoint() {
+    return this.waypoints.find((waypoint) => waypoint.isOpen());
   }
 
   /**

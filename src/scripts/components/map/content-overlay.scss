@@ -1,18 +1,58 @@
 .h5p-story-map-content-overlay {
   box-shadow: -2px 0 2px -2px hsl(0, 0%, 0%, 0.5);
   background-color: color-mix(in srgb, var(--h5p-theme-ui-base), transparent 30%);
+  display: flex;
+  flex-direction: column;
   grid-area: 1 / 1 / 1 / 1;
   height: 100%;
   justify-self: end;
-  max-height: var(--max-height, 100%);
-  max-width: var(--max-width, 100%);
-  overflow-y: auto;
+  max-height: 100%;
+  max-width: 100%;
+  min-height: 0;
   position: relative;
   right: var(--offset-right);
-  width: 50%;
+  width: clamp(20rem, 50%, 40rem); /* Keep line length readable on wide screens */
   z-index: 1001; /* Leaflet assigns ridiculous 1000 to the 4 quadrants, should be on top. */
 
   &.display-none {
     display: none;
+  }
+
+  /* Styling follows the dialog close button of H5P.InteractiveVideo */
+  .h5p-story-map-content-overlay-close-button {
+    align-items: center;
+    align-self: flex-end;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-shrink: 0;
+    justify-content: center;
+    min-height: 40px; // Minimum target size
+    min-width: 40px; // Minimum target size
+    padding: 0.25em 0.5em;
+
+    &::before {
+      color: var(--h5p-theme-contrast-cta-white);
+      content: var(--icon-h5ptheme-close);
+      font-family: "h5p-theme", sans-serif;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--h5p-theme-contrast-cta-white);
+    }
+  }
+
+  .h5p-story-map-content-overlay-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
+
+/* Narrow screens: Overlay covers the whole map, can be closed */
+@container h5p-story-map (width <= 600px) {
+  .h5p-story-map-content-overlay {
+    width: 100%;
   }
 }

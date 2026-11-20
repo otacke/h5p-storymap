@@ -1,10 +1,8 @@
 import ContentOverlay from './content-overlay.js';
 import GeoMap from './geo-map.js';
-import { extend, parseAspectRatio } from '@services/util.js';
+import { extend } from '@services/util.js';
+import { isUsingMouse } from '@services/h5p-util.js';
 import './map.scss';
-
-/** @constant {string} ASPECT_RATIO_DEFAULT Default aspect ratio if not set in CSS */
-const ASPECT_RATIO_DEFAULT = '16 / 9';
 
 /** @constant {number} MAP_CENTER_X_PERCENTAGE Map center X percentage. */
 const MAP_CENTER_X_PERCENTAGE = 0.5;
@@ -66,7 +64,16 @@ export default class Map {
     this.mapContainer.append(this.geoMap.getDOM());
     this.geoMap.setMapStyle(this.params.mapStyle);
 
-    this.contentOverlay = new ContentOverlay();
+    this.contentOverlay = new ContentOverlay(
+      {
+        dictionary: this.params.dictionary,
+      },
+      {
+        onClose: () => {
+          this.closeWaypointContent();
+        },
+      },
+    );
     this.mapContainer.append(this.contentOverlay.getDOM());
   }
 
@@ -155,6 +162,32 @@ export default class Map {
   }
 
   /**
+   * Close currently open waypoint content.
+   */
+  closeWaypointContent() {
+    const openWaypoint = this.geoMap.getOpenWaypoint();
+
+    this.contentOverlay.hide();
+    this.geoMap.setOpenWaypoint(null);
+
+    // Focusing a marker while using the mouse would reopen its content
+    if (openWaypoint && !isUsingMouse()) {
+      openWaypoint.getMarker().getElement()?.focus();
+    }
+    else {
+      this.geoMap.getDOM().focus();
+    }
+  }
+
+  /**
+   * Determine whether content overlay is open.
+   * @returns {boolean} True, if content overlay is open.
+   */
+  isContentOverlayOpen() {
+    return this.contentOverlay.isVisible();
+  }
+
+  /**
    * Center map on waypoint.
    * @param {object} waypoint Waypoint.
    * @param {boolean} contentOpen Whether content is open.
@@ -164,39 +197,11 @@ export default class Map {
       return;
     }
 
-    const positionXPercentage = contentOpen ? MAP_CENTER_X_PERCENTAGE_CONTENT_OPEN : MAP_CENTER_X_PERCENTAGE;
+    // If the overlay covers the full width, there's no visible map area to shift the marker into
+    const positionXPercentage = (contentOpen && !this.contentOverlay.isFullWidth()) ?
+      MAP_CENTER_X_PERCENTAGE_CONTENT_OPEN :
+      MAP_CENTER_X_PERCENTAGE;
     this.geoMap.centerOnWaypoint(waypoint.getId(), { positionXPercentage });
-  }
-
-  /**
-   * Set fullscreen mode.
-   * @param {boolean} shouldBeFullScreen True to enter fullscreen, false to exit fullscreen.
-   * @param {object} availableSpace Available space for the map.
-   */
-  setFullscreen(shouldBeFullScreen, availableSpace = {}) {
-    if (!availableSpace.width || !availableSpace.height) {
-      return;
-    }
-
-    this.mapContainer.style.removeProperty('--max-height');
-    this.mapContainer.style.removeProperty('--max-width');
-
-    if (!shouldBeFullScreen) {
-      return;
-    }
-
-    const style = window.getComputedStyle(this.dom);
-    const aspectRatio = parseAspectRatio(style.getPropertyValue('--aspectRatio') ?? ASPECT_RATIO_DEFAULT);
-
-    const availableAspectRatio = availableSpace.width / availableSpace.height;
-    if (availableAspectRatio > aspectRatio) {
-      this.mapContainer.style.setProperty('--max-height', `${availableSpace.height}px`);
-    }
-    else {
-      this.mapContainer.style.setProperty('--max-width', `${availableSpace.width}px`);
-    }
-
-    this.geoMap.invalidateSize();
   }
 
   /**

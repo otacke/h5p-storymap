@@ -156,6 +156,10 @@
           "label": "Inhalt geöffnet",
           "description": "@title ist ein Platzhalter und wird durch den jeweiligen Wegpunkt-Titel ersetzt.",
           "default": "Der Inhalt \"@title\" wurde geöffnet."
+        },
+        {
+          "label": "Inhalt schließen",
+          "default": "Inhalt schließen"
         }
       ]
     }

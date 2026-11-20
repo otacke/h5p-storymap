@@ -156,6 +156,10 @@
           "label": "Opened content",
           "description": "@title is a placeholder and will be replaced with the respective waypoint title.",
           "default": "The content \"@title\" was opened."
+        },
+        {
+          "label": "Close content",
+          "default": "Close content"
         }
       ]
     }

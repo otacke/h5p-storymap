@@ -71,7 +71,7 @@ export default class Main {
           this.handleWaypointContentOpened(index);
         },
         onMarkerFocus: (waypoint) => {
-          this.map.centerOnWaypoint(waypoint, this.getCurrentOpenWaypointContentIndex !== -1);
+          this.map.centerOnWaypoint(waypoint, this.map.isContentOverlayOpen());
         },
         onTaskCompleted: () => {
           this.checkCompleted();
@@ -108,21 +108,9 @@ export default class Main {
       return;
     }
 
-    const style = window.getComputedStyle(this.dom);
-
-    const marginHorizontal = parseFloat(style.getPropertyValue('margin-left')) +
-      parseFloat(style.getPropertyValue('margin-right'));
-
-    const marginVertical = parseFloat(style.getPropertyValue('margin-top')) +
-      parseFloat(style.getPropertyValue('margin-bottom'));
-
-    this.map.setFullscreen(shouldBeFullScreen, {
-      width: window.innerWidth - marginHorizontal,
-      height: window.innerHeight - marginVertical - this.navigationBar.getFullHeight(),
-    });
-
     this.navigationBar.setFullscreen(shouldBeFullScreen);
 
+    // H5P core triggers resize before (enter|exit)FullScreen, so layout has not been updated at that point yet.
     window.requestAnimationFrame(() => {
       this.params.globals.get('resize')();
     });

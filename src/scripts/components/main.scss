@@ -4,3 +4,8 @@
   gap: var(--h5p-theme-spacing-xxs);
   margin: var(--h5p-theme-spacing-s);
 }
+
+.h5p-story-map-fullscreen .h5p-story-map-main {
+  flex: 1 1 0;
+  min-height: 0;
+}

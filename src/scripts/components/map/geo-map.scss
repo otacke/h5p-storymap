@@ -10,8 +10,8 @@
   aspect-ratio: var(--aspectRatio);
   grid-area: 1 / 1 / 1 / 1;
   height: 100%;
-  max-height: var(--max-height, 100%);
-  max-width: var(--max-width, 100%);
+  max-height: 100%;
+  max-width: 100%;
   width: auto;
   position: relative;
 
@@ -69,7 +69,7 @@
     border-style: solid;
     border-width: 2px; /* Same as leaflet uses for zoom controls */
     cursor: grab;
-    width: calc(var(--waypoint-area-computed-width) * 0.25);
+    width: clamp(6rem, calc(var(--waypoint-area-computed-width) * 0.25), 16rem);
 
     &.visibility-hidden {
       visibility: hidden; /* Using display: none causes issues with Leaflet's rendering */
@@ -99,6 +99,12 @@
   &.add-pin-mode {
     cursor: crosshair;
   }
+}
+
+/* Override property, not --aspectRatio variable, as mini map needs to keep it */
+.h5p-story-map-fullscreen .geo-map {
+  aspect-ratio: auto;
+  width: 100%;
 }
 
 .using-mouse .leaflet-control-zoom.leaflet-bar.leaflet-control {
